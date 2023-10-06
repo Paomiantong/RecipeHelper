@@ -8,6 +8,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/RecipeHelper',
   plugins: [
     vue(),
     Components({
@@ -22,7 +23,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@views' :fileURLToPath(new URL('./src/views', import.meta.url)),
+      '@views': fileURLToPath(new URL('./src/views', import.meta.url))
     }
   }
 })
