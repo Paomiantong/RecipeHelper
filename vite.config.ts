@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import topLevelAwait from 'vite-plugin-top-level-await'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,6 +19,12 @@ export default defineConfig({
           resolveIcons: true
         })
       ]
+    }),
+    topLevelAwait({
+      // The export name of top-level await promise for each chunk module
+      promiseExportName: '__tla',
+      // The function to generate import names of top-level await promise in each chunk module
+      promiseImportName: (i:any) => `__tla_${i}`
     })
   ],
   resolve: {

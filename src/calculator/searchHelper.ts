@@ -2,7 +2,9 @@ import { items } from './database'
 import { take } from 'lodash'
 import Fuse from 'fuse.js'
 
-const fuse = new Fuse((await items()).default, {
+const loadedItems = (await items()).default
+
+const fuse = new Fuse(loadedItems, {
   keys: ['name', 'job', 'id']
 })
 
