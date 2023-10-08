@@ -1,5 +1,5 @@
 import { items } from './database'
-import { take } from 'lodash'
+import { take } from 'lodash-es'
 import Fuse from 'fuse.js'
 
 const loadedItems = (await items()).default

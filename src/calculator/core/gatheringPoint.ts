@@ -1,5 +1,5 @@
 import { mapData } from '../database'
-import { find } from 'lodash'
+import { find } from 'lodash-es'
 
 import type { MapDataDB } from '../database/database'
 import type { MaterialGraph } from './core'

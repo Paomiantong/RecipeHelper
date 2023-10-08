@@ -17,7 +17,7 @@ dependencies:
   fuse.js:
     specifier: ^6.6.2
     version: 6.6.2
-  lodash:
+  lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
   pinia:
@@ -37,9 +37,9 @@ devDependencies:
   '@tsconfig/node18':
     specifier: ^18.2.2
     version: 18.2.2
-  '@types/lodash':
-    specifier: ^4.14.199
-    version: 4.14.199
+  '@types/lodash-es':
+    specifier: ^4.17.9
+    version: 4.17.9
   '@types/node':
     specifier: ^18.18.3
     version: 18.18.3
@@ -637,6 +637,12 @@ packages:
 
   /@types/json-schema@7.0.13:
     resolution: {integrity: sha512-RbSSoHliUbnXj3ny0CNFOoxrIDV6SUGyStHsvDqosw6CkdPV8TtWGlfecuK4ToyMEAql6pzNxgCFKanovUzlgQ==}
+    dev: true
+
+  /@types/lodash-es@4.17.9:
+    resolution: {integrity: sha512-ZTcmhiI3NNU7dEvWLZJkzG6ao49zOIjEgIE0RgV7wbPxU0f2xT3VSAHw2gmst8swH6V0YkLRGp4qPlX/6I90MQ==}
+    dependencies:
+      '@types/lodash': 4.14.199
     dev: true
 
   /@types/lodash@4.14.199:

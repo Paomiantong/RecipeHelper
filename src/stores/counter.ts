@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { forIn } from 'lodash'
+import { forIn } from 'lodash-es'
 
 import type Material from '@/calculator/model/material'
 import { createMaterialGraph, createMaterialLayers } from '@/calculator/core/recipe'

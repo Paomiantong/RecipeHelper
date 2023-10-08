@@ -1,6 +1,6 @@
 import { materials, basicIngredient } from '../database'
 // import Fuse from 'fuse.js';
-import uniq from 'lodash/uniq'
+import { uniq } from 'lodash-es'
 // import take from 'lodash/take';
 
 import Material from '../model/material'

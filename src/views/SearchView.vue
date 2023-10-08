@@ -26,7 +26,7 @@
 </template>
 <script lang="ts" setup>
 import { watch, ref } from 'vue'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-es'
 import { helpers } from '@/calculator'
 const value = ref<string>('')
 const list = ref([])
