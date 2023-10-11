@@ -1,49 +1,38 @@
 <template>
-  <a-input-search v-model:value="value" placeholder="input search loading with enterButton" />
-  <a-list class="demo-loadmore-list" item-layout="horizontal" :data-source="list">
-    <template #renderItem="{ item }">
-      <a-list-item>
-        <template #actions>
-          <a key="list-loadmore-edit">edit</a>
-          <a key="list-loadmore-more">more</a>
-        </template>
-        <a-skeleton avatar :title="false" :loading="!!item.loading" active>
-          <a-list-item-meta
-            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-          >
-            <template #title>
-              <span>{{ item.name }}</span>
-            </template>
-            <template #avatar>
-              <a-avatar :src="helpers.getIconByIconID(item.icon)" />
-            </template>
-          </a-list-item-meta>
-          <div>{{ item.id }}</div>
-        </a-skeleton>
-      </a-list-item>
-    </template>
-  </a-list>
+  <div class="global-search-wrapper" style="width: 300px">
+    <a-auto-complete
+      v-model:value="value"
+      :dropdown-match-select-width="252"
+      style="width: 300px"
+      :options="dataSource"
+      @select="onSelect"
+      @search="onSearch"
+    >
+      <template #option="item">
+        <div style="display: flex; justify-content: space-between">
+          <a-avatar shape="square" :src="helpers.getIconByIconID(item.icon)" />
+          <span>{{ item.name }}</span>
+        </div>
+      </template>
+      <a-input-search size="large" placeholder="input here" enter-button></a-input-search>
+    </a-auto-complete>
+  </div>
 </template>
+
 <script lang="ts" setup>
-import { watch, ref } from 'vue'
+import { ref } from 'vue'
 import { debounce } from 'lodash-es'
 import { helpers } from '@/calculator'
+import type { SearchResult } from '@/calculator/searchHelper'
 const value = ref<string>('')
-const list = ref([])
+const dataSource = ref<SearchResult[]>([])
 
-watch(
-  value,
-  debounce(() => {
-    search(value.value)
-  }, 700)
-)
+const onSearch = debounce((key: string) => {
+  dataSource.value = helpers.searchRecipe(key)
+  dataSource.value.forEach((v) => (v.value = v.name))
+}, 200)
 
-const search = async (key: string) => {
-  list.value = helpers.searchRecipe(key) as any
+const onSelect = (value: string, option: string) => {
+  console.log(option)
 }
 </script>
-<style scoped>
-.demo-loadmore-list {
-  min-height: 350px;
-}
-</style>

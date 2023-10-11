@@ -1,0 +1,35 @@
+.ag-theme-material .ag-cell-inline-editing {
+  --ag-grid-size: 0px;
+}
+
+.ag-theme-material .ag-header {
+  --ag-header-background-color: #fafafa;
+}
+
+.ag-theme-material .ag-header-cell {
+  color: rgba(0, 0, 0, 0.88);
+  font-weight: 600;
+}
+
+.ag-theme-material .ag-header-cell::before {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0;
+  width: 2px;
+  height: 1.6em;
+  background-color: #f0f0f0;
+  transform: translateY(-50%);
+  transition: background-color 0.2s;
+  content: '';
+}
+
+.ag-theme-material {
+  --ag-header-background-color: #fafafa;
+  --ag-font-size: 14px !important;
+  --ag-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji' !important;
+  --ag-input-focus-border-color: #4096ff !important;
+  --ag-range-selection-border-color: #4096ff !important;
+  --ag-selected-row-background-color: #e6f4ff !important;
+}

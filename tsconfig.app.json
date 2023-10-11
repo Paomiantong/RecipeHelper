@@ -8,7 +8,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@views/*": ["./src/views/*"],
-      "@data/*": ["./src/data/*"]
+      "@data/*": ["./src/data/*"],
+      "@components/*" :["./src/components/*"]
     }
   }
 }

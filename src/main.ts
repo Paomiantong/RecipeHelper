@@ -1,4 +1,5 @@
 import './assets/main.css'
+import 'ag-grid-community/styles/ag-grid.css' // Core grid CSS, always needed
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

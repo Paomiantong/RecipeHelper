@@ -1,25 +1,15 @@
-import { materials, basicIngredient } from '../database'
-// import Fuse from 'fuse.js';
 import { uniq } from 'lodash-es'
-// import take from 'lodash/take';
+
+import { linkGatheringPoint } from './gatheringPoint'
 
 import Material from '../model/material'
 import Recipe from '../model/recipe'
+import { materials, basicIngredient } from '../database'
 import { setItemH2getTag } from '../itemHelper'
 import { Queue } from '../utils'
-import { linkGatheringPoint } from './gatheringPoint'
 
 import type { MaterialDB, BasicIngredientDB } from '../database/database'
 import type { Item, MaterialGraph } from './core'
-
-// const fuse = new Fuse(items, {
-//   keys: ['name', 'job', 'id']
-// });
-
-// export function searchRecipe(name) {
-//   if (name.length > 15) return [];
-//   return take(fuse.search(name), 10);
-// }
 
 export async function createMaterialGraph(itemList: Item[], includingCrystal = false) {
   const materialGraph: MaterialGraph = {}

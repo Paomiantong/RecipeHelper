@@ -1,0 +1,61 @@
+:global(.erozea-map-outer.close) {
+  z-index: -1;
+  opacity: 0;
+}
+
+:global(.erozea-map-outer) {
+  z-index: 999;
+  padding: 0;
+  margin: 0;
+  width: 300px;
+  height: 300px;
+  position: fixed;
+  /* visibility: hidden; */
+  left: 0;
+  top: 0;
+}
+
+:global(.eorzea-map-inner) {
+  width: 300px;
+  height: 300px;
+}
+
+:global(.eorzea-map-place-name) {
+  color: #fff;
+}
+
+:global(.eorzea-map-move-handler) {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 100%;
+  width: calc(100% - 24px);
+  height: 24px;
+  z-index: 2001;
+  cursor: move;
+}
+
+:global(.eorzea-map-close-button) {
+  background: url(/EorzeaMapAssets_buttonClose.png) no-repeat top left;
+  width: 36px;
+  height: 36px;
+}
+
+:global(.eorzea-map-close-button) {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: transparent;
+  z-index: 2002;
+  line-height: 24px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+:global(.eorzea-map-close-button:active) {
+  background-position-x: -72px;
+}
+
+:global(.eorzea-map-close-button:hover) {
+  background-position-x: -36px;
+}
