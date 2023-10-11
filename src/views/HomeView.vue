@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
   <a-space wrap>
     <a-button type="primary">Primary Button</a-button>
