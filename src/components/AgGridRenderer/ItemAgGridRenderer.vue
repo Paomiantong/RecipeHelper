@@ -27,4 +27,7 @@ const props = defineProps<{
   justify-content: space-between;
   align-items: center;
 }
+.item .ant-avatar {
+  flex-shrink: 0;
+}
 </style>

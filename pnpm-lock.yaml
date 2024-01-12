@@ -21,8 +21,8 @@ dependencies:
     specifier: ^30.2.0
     version: 30.2.0(ag-grid-community@30.2.0)(vue@3.3.4)
   ant-design-vue:
-    specifier: 4.x
-    version: 4.0.3(vue@3.3.4)
+    specifier: ~4.1.0
+    version: 4.1.0(vue@3.3.4)
   axios:
     specifier: ^1.5.1
     version: 1.5.1
@@ -1078,8 +1078,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /ant-design-vue@4.0.3(vue@3.3.4):
-    resolution: {integrity: sha512-fbgZbbirLx7rc19ytaGxApwS01CKLRzvEZmH0TVF06niQA9ekx7xkvfQGlmiSaCs4b8nWZi4Bo7gUzRNRt5YJA==}
+  /ant-design-vue@4.1.0(vue@3.3.4):
+    resolution: {integrity: sha512-sVQAfTCxpGRfFykM033/0ZWfNWbsL8EsqhBP9knbP4Ptc52zG57mQsCPWvq6Cj3yqmDJW6ykY05v0KB+5rAPXg==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       vue: '>=3.2.0'

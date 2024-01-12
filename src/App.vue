@@ -1,66 +1,68 @@
 <template>
   <a-layout>
     <a-layout-header class="header">
-      <div class="logo" />
-      <a-menu
-        v-model:selectedKeys="selectedKeys1"
-        theme="dark"
-        mode="horizontal"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">nav 1</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
-      </a-menu>
+      <a-flex gap="middle">
+        <div class="logo"><h1>RecipeHelper</h1></div>
+        <a-menu
+          v-model:selectedKeys="selectedKeys1"
+          mode="horizontal"
+          :style="{ lineHeight: '64px' }"
+        >
+          <a-menu-item key="1">Project1</a-menu-item>
+          <a-menu-item key="2">Project2</a-menu-item>
+          <a-menu-item key="3">Project3</a-menu-item>
+        </a-menu>
+      </a-flex>
     </a-layout-header>
 
     <a-layout>
       <!-- 侧边栏 -->
-      <a-layout-sider width="200" style="background: #fff">
-        <a-menu
-          v-model:selectedKeys="selectedKeys2"
-          v-model:openKeys="openKeys"
-          mode="inline"
-          :style="{ height: '100%', borderRight: 0 }"
-        >
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <user-outlined />
-                subnav 1
-              </span>
+      <a-layout-sider width="400" style="background: #fff">
+        <!-- 搜索框 -->
+        <div id="search-box">
+          <SearchOutlined />
+          <a-auto-complete
+            v-model:value="value"
+            :dropdown-match-select-width="252"
+            :bordered="false"
+            style="width: 100%"
+            :options="dataSource"
+            @select="onSelect"
+            @search="onSearch"
+            placeholder="搜索物品"
+          >
+            <template #option="item">
+              <div style="display: flex; justify-content: space-between">
+                <a-avatar shape="square" :src="helpers.getIconByIconID(item.icon)" />
+                <span>{{ item.name }}</span>
+              </div>
             </template>
-            <a-menu-item key="1">option1</a-menu-item>
-            <a-menu-item key="2">option2</a-menu-item>
-            <a-menu-item key="3">option3</a-menu-item>
-            <a-menu-item key="4">option4</a-menu-item>
-          </a-sub-menu>
-
-          <a-sub-menu key="sub2">
-            <template #title>
-              <span>
-                <laptop-outlined />
-                subnav 2
-              </span>
-            </template>
-            <a-menu-item key="5">option5</a-menu-item>
-            <a-menu-item key="6">option6</a-menu-item>
-            <a-menu-item key="7">option7</a-menu-item>
-            <a-menu-item key="8">option8</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub3">
-            <template #title>
-              <span>
-                <notification-outlined />
-                subnav 3
-              </span>
-            </template>
-            <a-menu-item key="9">option9</a-menu-item>
-            <a-menu-item key="10">option10</a-menu-item>
-            <a-menu-item key="11">option11</a-menu-item>
-            <a-menu-item key="12">option12</a-menu-item>
-          </a-sub-menu>
-        </a-menu>
+          </a-auto-complete>
+          <a-button @click="counterStore.work">Go</a-button>
+          <!-- <a-button @click="counterStore.save">Save</a-button> -->
+        </div>
+        <!-- 物品列表 -->
+        <a-list id="item-list" item-layout="horizontal" :data-source="counterStore.itemList">
+          <template #renderItem="{ item }">
+            <a-list-item>
+              <template #actions>
+                <a-input-number v-model:value="item.amount" :min="1" style="width: 70px" />
+              </template>
+              <a-tooltip placement="topLeft" title="点击删除">
+                <a-avatar
+                  @click="
+                    () => {
+                      counterStore.removeItem(item.id)
+                    }
+                  "
+                  shape="square"
+                  :src="helpers.getIconByIconID(item.icon)"
+                />
+              </a-tooltip>
+              <span>{{ item.name }}</span>
+            </a-list-item>
+          </template>
+        </a-list>
       </a-layout-sider>
 
       <!-- 主体 -->
@@ -76,31 +78,65 @@
         >
           <RouterView />
         </a-layout-content>
+        <a-layout-footer style="text-align: center">
+          Data,image FINAL FANTASY XIV©2010 - 2024 SQUARE ENIX CO., LTD. All Rights Reserved.
+        </a-layout-footer>
       </a-layout>
     </a-layout>
   </a-layout>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { Flex as AFlex } from 'ant-design-vue'
+
+import { useCounterStore } from '@/stores/counter'
+import { debounce } from 'lodash-es'
+import { helpers } from '@/calculator'
+import type { SearchResult } from '@/calculator/searchHelper'
+
+const value = ref<string>('')
+const dataSource = ref<SearchResult[]>([])
+
+const counterStore = useCounterStore()
+
 const selectedKeys1 = ref<string[]>(['2'])
-const selectedKeys2 = ref<string[]>(['1'])
-const openKeys = ref<string[]>(['sub1'])
+
+const onSearch = debounce((key: string) => {
+  dataSource.value = helpers.searchRecipe(key)
+  dataSource.value.forEach((v) => (v.value = v.name))
+}, 200)
+
+const onSelect = (_: string, option: SearchResult) => {
+  if (!counterStore.itemList.find((x) => x.id == option.id)) {
+    counterStore.itemList.push({ ...option, amount: 1 })
+  }
+}
 </script>
 <style scoped>
-#components-layout-demo-top-side-2 .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+.logo h1 {
+  margin: 0;
 }
-
-.ant-row-rtl #components-layout-demo-top-side-2 .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
+#search-box {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .site-layout-background {
   background: #fff;
+}
+
+.ant-layout-header {
+  background: #fff;
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.03),
+    0 1px 6px -1px rgba(0, 0, 0, 0.02),
+    0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  z-index: 99;
+}
+</style>
+<style>
+#item-list .ant-list-item-action {
+  margin-inline-start: 8px !important;
 }
 </style>

@@ -1,9 +1,13 @@
 <template>
   <a-space wrap>
-    <a-button type="primary">Primary Button</a-button>
-    <a-button>Default Button</a-button>
-    <a-button type="dashed">Dashed Button</a-button>
-    <a-button type="text">Text Button</a-button>
-    <a-button type="link">Link Button</a-button>
+    <a-button type="primary" @click="go">体验一波</a-button>
   </a-space>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+const router = useRouter()
+function go() {
+  router.push({ name: 'work' })
+}
+</script>

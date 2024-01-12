@@ -1,6 +1,4 @@
 <template>
-  <a-button type="primary" @click="counterStore.work">Primary Button</a-button>
-  <a-button type="primary" @click="() => erozeaMap.pin('92', 20, 20)">Primary Button</a-button>
   <ag-grid-vue
     class="ag-theme-material"
     style="height: 500px"
@@ -31,7 +29,6 @@ import ItemArchorRenderer from '@/components/AgGridRenderer/ItemArchorRenderer.v
 import AmountEditor from '@/components/AgGridRenderer/AmountEditor.vue'
 
 import { useCounterStore } from '@/stores/counter'
-import erozeaMap from '@/components/ErozeaMap'
 
 const gridApi = ref<GridOptions<Material>['api']>(null) // Optional - for accessing Grid's API
 
@@ -43,13 +40,14 @@ const onGridReady = (params: GridOptions) => {
 // Each Column Definition results in one Column.
 const columnDefs = {
   value: [
-    { headerName: '物品', field: 'name', cellRenderer: ItemAgGridRenderer },
+    //TODO: 物品名字太长，挤压图片
+    { headerName: '物品', field: 'name', cellRenderer: ItemAgGridRenderer, flex: 1 },
     {
       headerName: '数量',
       field: 'amount',
       editable: true,
       cellEditor: AmountEditor,
-      width: 120
+      width: 120,
     },
     { headerName: '坐标', field: 'gatheringPoint.name', cellRenderer: ItemArchorRenderer, flex: 1 }
   ]
@@ -73,9 +71,9 @@ const cellWasClicked = (event: any) => {
   console.log('cell was clicked', event)
 }
 
-const deselectRows = () => {
-  gridApi.value!.deselectAll()
-}
+// const deselectRows = () => {
+//   gridApi.value!.deselectAll()
+// }
 
 const counterStore = useCounterStore()
 </script>

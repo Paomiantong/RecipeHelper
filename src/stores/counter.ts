@@ -5,38 +5,13 @@ import { forIn } from 'lodash-es'
 import type Material from '@/calculator/model/material'
 import { createMaterialGraph, createMaterialLayers } from '@/calculator/core/recipe'
 import { calculateIngredients, calculateChanges } from '@/calculator/core/calculate'
-import type { MaterialGraph } from '@/calculator/core/core'
-import { getIconByIconID } from '@/calculator/itemHelper'
+import type { Item, MaterialGraph } from '@/calculator/core/core'
 
 export const useCounterStore = defineStore('counter', () => {
   const materialGraph = ref<MaterialGraph>({})
   const materialLayers = ref<string[][]>([])
   const basicMaterals = ref<Material[]>([])
-
-  const itemList = ref([
-    { id: 1838, name: '\u9ed1\u94c1\u6218\u621f', amount: 3 },
-    { id: 1915, name: '\u68a3\u6728\u9a91\u5175\u5f13', amount: 3 },
-    { id: 2464, name: '\u7ea2\u6728\u7eba\u8f66', amount: 3 },
-    { id: 2039, name: '\u7fe1\u7fe0\u624b\u6756', amount: 3 },
-    { id: 10610, name: '\u96ea\u677e\u957f\u5f13', amount: 3 },
-    { id: 12581, name: '\u6697\u6817\u6728\u6728\u6750', amount: 3 },
-    {
-      id: 10799,
-      name: '\u795d\u5723\u6817\u6728\u7cbe\u51c6\u5047\u9762',
-      amount: 3
-    },
-    { id: 19925, name: '\u5c71\u6bdb\u6989\u6728\u6750', amount: 6 },
-    { id: 19730, name: '\u843d\u53f6\u677e\u624b\u94fe', amount: 3 },
-    { id: 18353, name: '\u677e\u6728\u7267\u6756', amount: 3 },
-    { id: 18661, name: '\u6989\u6728\u957f\u5f13', amount: 3 },
-    { id: 27203, name: '\u767d\u6a61\u6728\u9879\u94fe', amount: 9 },
-    { id: 25796, name: '\u4ed9\u679c\u6728\u7267\u6756', amount: 6 },
-    { id: 27219, name: '\u767d\u68a3\u6728\u624b\u956f', amount: 6 },
-    { id: 26112, name: '\u6c99\u67da\u6728\u957f\u5f13', amount: 6 },
-    { id: 27227, name: '\u6108\u75ae\u6728\u8033\u5760', amount: 9 },
-    { name: '矮人银镐', job: '锻铁匠', id: '26268', amount: 1 },
-    { name: '矮人银锭', job: '锻铁匠', id: '27714', amount: 1 }
-  ])
+  const itemList = ref<Item[]>([])
 
   function calculate(id: string, changes: number) {
     if (materialGraph.value[id].own + changes < 0) changes = -materialGraph.value[id].own
@@ -46,6 +21,10 @@ export const useCounterStore = defineStore('counter', () => {
 
     materialGraph.value[id].own += changes
     calculateChanges(materialGraph.value[id], -changes)
+  }
+
+  function removeItem(id: string) {
+    itemList.value = itemList.value.filter((v) => v.id !== id)
   }
 
   async function work() {
@@ -59,6 +38,17 @@ export const useCounterStore = defineStore('counter', () => {
     })
 
     return materialGraph
+  }
+
+  function save() {
+    const data = {
+      materialGraph: materialGraph.value,
+      materialLayers: materialLayers.value,
+      basicMaterals: basicMaterals.value,
+      itemList: itemList.value
+    }
+    console.log(JSON.stringify(data))
+    localStorage.setItem('project', JSON.stringify(data))
   }
 
   //   async function loadProject(project) {
@@ -111,6 +101,8 @@ export const useCounterStore = defineStore('counter', () => {
     itemList,
     calculate,
     work,
+    save,
+    removeItem,
     materials,
     materialsWithlayer
   }
