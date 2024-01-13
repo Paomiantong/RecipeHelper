@@ -1,18 +1,23 @@
 <template>
   <a-layout>
+    <!-- 顶部导航栏 -->
     <a-layout-header class="header">
-      <a-flex gap="middle">
-        <div class="logo"><h1>RecipeHelper</h1></div>
-        <a-menu
-          v-model:selectedKeys="selectedKeys1"
-          mode="horizontal"
-          :style="{ lineHeight: '64px' }"
-        >
-          <a-menu-item key="1">Project1</a-menu-item>
-          <a-menu-item key="2">Project2</a-menu-item>
-          <a-menu-item key="3">Project3</a-menu-item>
-        </a-menu>
-      </a-flex>
+      <div class="logo">
+        <h1><router-link to="/">RecipeHelper</router-link></h1>
+      </div>
+      <a-menu mode="horizontal" style="flex-shrink: 0" @click="onMenuClock">
+        <a-menu-item v-for="item in projectStore.projectList" :key="item">
+          <span style="padding: 0 8px">{{ item }}</span>
+          <a-popconfirm
+            title="你确定要删除这个项目吗?"
+            ok-text="Yes"
+            cancel-text="No"
+            @confirm="() => confirm(item)"
+          >
+            <a-button type="link" size="small" :icon="h(DeleteFilled)"></a-button>
+          </a-popconfirm>
+        </a-menu-item>
+      </a-menu>
     </a-layout-header>
 
     <a-layout>
@@ -39,7 +44,7 @@
             </template>
           </a-auto-complete>
           <a-button @click="counterStore.work">Go</a-button>
-          <!-- <a-button @click="counterStore.save">Save</a-button> -->
+          <a-button @click="projectStore.saveProject">Save</a-button>
         </div>
         <!-- 物品列表 -->
         <a-list id="item-list" item-layout="horizontal" :data-source="counterStore.itemList">
@@ -85,21 +90,35 @@
     </a-layout>
   </a-layout>
 </template>
+
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { Flex as AFlex } from 'ant-design-vue'
+import { h, ref } from 'vue'
+
+import { debounce } from 'lodash-es'
+import { message } from 'ant-design-vue'
+import { DeleteFilled } from '@ant-design/icons-vue'
 
 import { useCounterStore } from '@/stores/counter'
-import { debounce } from 'lodash-es'
+import { useProjectStore } from './stores/projectManager'
 import { helpers } from '@/calculator'
+
+import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
 import type { SearchResult } from '@/calculator/searchHelper'
+import { useRouter } from 'vue-router'
 
 const value = ref<string>('')
 const dataSource = ref<SearchResult[]>([])
 
 const counterStore = useCounterStore()
+const projectStore = useProjectStore()
+const router = useRouter()
 
-const selectedKeys1 = ref<string[]>(['2'])
+const confirm = (item: string) => {
+  message.success('Delete Project:' + item)
+  if (projectStore.deleteProject(item)) {
+    router.push({ name: 'home' })
+  }
+}
 
 const onSearch = debounce((key: string) => {
   dataSource.value = helpers.searchRecipe(key)
@@ -111,8 +130,17 @@ const onSelect = (_: string, option: SearchResult) => {
     counterStore.itemList.push({ ...option, amount: 1 })
   }
 }
+
+const onMenuClock = ({ key }: MenuInfo) => {
+  projectStore.switchProject(key as string)
+  router.push({ name: 'work' })
+}
 </script>
+
 <style scoped>
+.logo {
+  float: left;
+}
 .logo h1 {
   margin: 0;
 }
@@ -135,6 +163,7 @@ const onSelect = (_: string, option: SearchResult) => {
   z-index: 99;
 }
 </style>
+
 <style>
 #item-list .ant-list-item-action {
   margin-inline-start: 8px !important;

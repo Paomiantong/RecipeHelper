@@ -5,13 +5,21 @@ import { forIn } from 'lodash-es'
 import type Material from '@/calculator/model/material'
 import { createMaterialGraph, createMaterialLayers } from '@/calculator/core/recipe'
 import { calculateIngredients, calculateChanges } from '@/calculator/core/calculate'
-import type { Item, MaterialGraph } from '@/calculator/core/core'
+import type { Item, MaterialGraph } from '@/calculator/core'
+import Project from '@/calculator/model/project'
 
 export const useCounterStore = defineStore('counter', () => {
   const materialGraph = ref<MaterialGraph>({})
   const materialLayers = ref<string[][]>([])
   const basicMaterals = ref<Material[]>([])
   const itemList = ref<Item[]>([])
+
+  function reset() {
+    materialGraph.value = {}
+    materialLayers.value = []
+    basicMaterals.value = []
+    itemList.value = []
+  }
 
   function calculate(id: string, changes: number) {
     if (materialGraph.value[id].own + changes < 0) changes = -materialGraph.value[id].own
@@ -40,33 +48,20 @@ export const useCounterStore = defineStore('counter', () => {
     return materialGraph
   }
 
-  function save() {
-    const data = {
-      materialGraph: materialGraph.value,
-      materialLayers: materialLayers.value,
-      basicMaterals: basicMaterals.value,
-      itemList: itemList.value
+  async function loadProject(project: Project) {
+    itemList.value = project.itemList
+    const ret = await createMaterialGraph(project.itemList, false)
+    materialGraph.value = ret
+    materialLayers.value = createMaterialLayers(itemList.value, materialGraph.value)
+    for (const key in project.ownAmountOfItems) {
+      materialGraph.value[key].own = project.ownAmountOfItems[key]
     }
-    console.log(JSON.stringify(data))
-    localStorage.setItem('project', JSON.stringify(data))
+    calculateIngredients(itemList.value, materialGraph.value)
+    basicMaterals.value = []
+    forIn(materialGraph.value, (v) => {
+      if (v.isBasic) basicMaterals.value.push(v)
+    })
   }
-
-  //   async function loadProject(project) {
-  //     const materialGraph = await createMaterialGraph(project.itemList, false)
-  //     runInAction(() => {
-  //       this.itemList = project.itemList
-  //       this.materialGraph = materialGraph
-  //       this.materialLayers = createMaterialLayers(this.itemList, this.materialGraph)
-  //       for (const key in project.ownAmountOfItems) {
-  //         this.materialGraph[key].own = project.ownAmountOfItems[key]
-  //       }
-  //       calculateIngredients(this.itemList, this.materialGraph)
-  //       this.basicMaterals = []
-  //       forIn(this.materialGraph, (v) => {
-  //         if (v.isBasic) this.basicMaterals.push(v)
-  //       })
-  //     })
-  //   }
 
   const materials = computed(() => Object.entries(materialGraph.value).map((v) => v[1]))
 
@@ -101,9 +96,10 @@ export const useCounterStore = defineStore('counter', () => {
     itemList,
     calculate,
     work,
-    save,
     removeItem,
     materials,
-    materialsWithlayer
+    materialsWithlayer,
+    loadProject,
+    reset
   }
 })
