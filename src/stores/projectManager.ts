@@ -33,6 +33,7 @@ export const useProjectStore = defineStore('projectMgr', {
       localStorage.setItem('current_project', this.currentProject)
     },
     switchProject(name: string) {
+      if (name === this.currentProject) return
       this.saveProject()
       this.currentProject = name
       this.loadProejct()

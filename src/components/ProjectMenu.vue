@@ -12,6 +12,7 @@
         ok-text="Yes"
         cancel-text="No"
         @confirm="() => confirm(item)"
+        @click="(e: MouseEvent) => e.stopPropagation()"
       >
         <a-button type="link" size="small" :icon="h(DeleteFilled)"></a-button>
       </a-popconfirm>
