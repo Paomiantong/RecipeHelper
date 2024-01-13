@@ -18,14 +18,12 @@ const router = createRouter({
       component: () => import('@views/AboutView.vue')
     },
     {
-        path: '/search',
-        name: 'search',
-        component: () => import('@views/SearchView.vue')
-    },
-    {
-        path: '/work',
-        name: 'work',
-        component: () => import('@views/WorkView.vue')
+      path: '/work',
+      name: 'work',
+      components: {
+        default: () => import('@views/WorkView.vue'),
+        sidebar: () => import('@components/ItemList.vue')
+      }
     }
   ]
 })

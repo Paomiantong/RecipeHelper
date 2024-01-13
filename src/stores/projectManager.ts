@@ -1,22 +1,19 @@
 import Project from '@/calculator/model/project'
 import { defineStore } from 'pinia'
 import { useCounterStore } from './counter'
+import { message } from 'ant-design-vue'
 
 export const useProjectStore = defineStore('projectMgr', {
   // 推荐使用 完整类型推断的箭头函数
   state: () => {
     return {
       projectList: Array<string>(),
-      currentProject: 'Project'
+      currentProject: '$Project'
     }
   },
   getters: {
-    toItems: (state) => {
-      return state.projectList.map((v) => ({
-        key: `prj-${v}`,
-        label: v,
-        title: v
-      }))
+    selectedKey: (state) => {
+      return [state.currentProject]
     }
   },
   actions: {
@@ -26,8 +23,9 @@ export const useProjectStore = defineStore('projectMgr', {
       const raw_current_project = localStorage.getItem('current_project')
       if (raw_current_project) {
         this.currentProject = raw_current_project
-        const currentProjectIdx = this.projectList.indexOf(this.currentProject)
-        if (currentProjectIdx != -1) this.loadProejct()
+        if (this.projectList.indexOf(this.currentProject) != -1) {
+          this.loadProejct()
+        }
       }
     },
     save() {
@@ -56,6 +54,7 @@ export const useProjectStore = defineStore('projectMgr', {
       if (this.projectList.indexOf(name) == -1) {
         this.projectList.push(name)
         this.currentProject = name
+        this.loadProejct()
         this.save()
       }
     },
@@ -63,6 +62,7 @@ export const useProjectStore = defineStore('projectMgr', {
       const counterStore = useCounterStore()
       if (this.projectList.length != 0) {
         new Project(this.currentProject, counterStore.itemList, counterStore.materialGraph).save()
+        message.success(`${this.currentProject} 保存成功`)
       }
     },
     deleteProject(name: string) {
@@ -75,7 +75,7 @@ export const useProjectStore = defineStore('projectMgr', {
           this.projectList = []
         } else {
           const prevIdx = this.projectList.indexOf(name)
-          const idx = this.projectList.length == prevIdx + 1 ? 0 : prevIdx + 1
+          const idx = this.projectList.length == prevIdx + 1 ? 0 : prevIdx
           this.projectList.splice(prevIdx, 1)
           this.currentProject = this.projectList[idx]
           this.loadProejct()

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3' // the AG Grid Vue Component
 
 import type { CellEditRequestEvent, GridOptions } from 'ag-grid-community'
@@ -24,11 +24,15 @@ import type Material from '@/calculator/model/material'
 
 import 'ag-grid-community/styles/ag-theme-material.min.css' // Optional theme CSS
 
-import ItemAgGridRenderer from '@/components/AgGridRenderer/ItemAgGridRenderer.vue'
-import ItemArchorRenderer from '@/components/AgGridRenderer/ItemArchorRenderer.vue'
-import AmountEditor from '@/components/AgGridRenderer/AmountEditor.vue'
+import ItemAgGridRenderer from '@components/AgGridRenderer/ItemAgGridRenderer.vue'
+import ItemArchorRenderer from '@components/AgGridRenderer/ItemArchorRenderer.vue'
+import AmountEditor from '@components/AgGridRenderer/AmountEditor.vue'
 
 import { useCounterStore } from '@/stores/counter'
+import { useProjectStore } from '@/stores/projectManager'
+
+const counterStore = useCounterStore()
+const projectStore = useProjectStore()
 
 const gridApi = ref<GridOptions<Material>['api']>(null) // Optional - for accessing Grid's API
 
@@ -47,7 +51,7 @@ const columnDefs = {
       field: 'amount',
       editable: true,
       cellEditor: AmountEditor,
-      width: 120,
+      width: 120
     },
     { headerName: '坐标', field: 'gatheringPoint.name', cellRenderer: ItemArchorRenderer, flex: 1 }
   ]
@@ -75,5 +79,13 @@ const cellWasClicked = (event: any) => {
 //   gridApi.value!.deselectAll()
 // }
 
-const counterStore = useCounterStore()
+const saveTask = { id: -1 }
+
+onMounted(() => {
+  saveTask.id = setInterval(projectStore.saveProject, 60000)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(saveTask.id)
+})
 </script>

@@ -24,14 +24,15 @@ export default defineConfig({
       // The export name of top-level await promise for each chunk module
       promiseExportName: '__tla',
       // The function to generate import names of top-level await promise in each chunk module
-      promiseImportName: (i:any) => `__tla_${i}`
+      promiseImportName: (i: any) => `__tla_${i}`
     })
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@views': fileURLToPath(new URL('./src/views', import.meta.url)),
-      '@data': fileURLToPath(new URL('./src/data', import.meta.url))
+      '@data': fileURLToPath(new URL('./src/data', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url))
     }
   }
 })

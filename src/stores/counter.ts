@@ -19,6 +19,7 @@ export const useCounterStore = defineStore('counter', () => {
     materialLayers.value = []
     basicMaterals.value = []
     itemList.value = []
+    console.log("RESET COUNTERSTORE")
   }
 
   function calculate(id: string, changes: number) {
