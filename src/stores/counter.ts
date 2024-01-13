@@ -5,7 +5,7 @@ import { forIn } from 'lodash-es'
 import type Material from '@/calculator/model/material'
 import { createMaterialGraph, createMaterialLayers } from '@/calculator/core/recipe'
 import { calculateIngredients, calculateChanges } from '@/calculator/core/calculate'
-import type { Item, MaterialGraph } from '@/calculator/core'
+import type { Item, MaterialGraph } from '@/calculator/core/types'
 import Project from '@/calculator/model/project'
 
 export const useCounterStore = defineStore('counter', () => {

@@ -9,7 +9,7 @@ import { setItemH2getTag } from '../itemHelper'
 import { Queue } from '../utils'
 
 import type { MaterialDB, BasicIngredientDB } from '../database/database'
-import type { Item, MaterialGraph } from './core'
+import type { Item, MaterialGraph } from './types'
 
 export async function createMaterialGraph(itemList: Item[], includingCrystal = false) {
   const materialGraph: MaterialGraph = {}

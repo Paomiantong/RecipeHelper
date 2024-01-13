@@ -1,4 +1,4 @@
-import type { Item, MaterialGraph } from '../core'
+import type { Item, MaterialGraph } from '../core/types'
 
 export default class Project {
   name: string

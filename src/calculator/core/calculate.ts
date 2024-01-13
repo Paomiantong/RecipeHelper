@@ -1,5 +1,5 @@
 import type Material from '../model/material'
-import type { Item, MaterialGraph } from './core'
+import type { Item, MaterialGraph } from './types'
 
 export function calculateIngredients(itemList: Item[], materialGraph: MaterialGraph) {
   for (const index in itemList) {

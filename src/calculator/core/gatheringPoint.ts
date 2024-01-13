@@ -3,7 +3,7 @@ import { find } from 'lodash-es'
 import { mapData } from '../database'
 
 import type { MapDataDB } from '../database/database'
-import type { MaterialGraph } from './core'
+import type { MaterialGraph } from './types'
 
 export async function linkGatheringPoint(materials: MaterialGraph) {
   const loadedMapData: MapDataDB = await mapData()
