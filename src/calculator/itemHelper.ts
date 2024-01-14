@@ -16,3 +16,8 @@ export function setItemH2getTag(item: Material) {
     }
   }
 }
+
+export function getItemH2getIcon(tag: number) {
+  if (tag == -1) return
+  return `https://cafemaker.wakingsands.com/i/${currency[tag].icon}`
+}

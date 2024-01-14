@@ -7,6 +7,7 @@ import { createMaterialGraph, createMaterialLayers } from '@/calculator/core/rec
 import { calculateIngredients, calculateChanges } from '@/calculator/core/calculate'
 import type { Item, MaterialGraph } from '@/calculator/core/types'
 import Project from '@/calculator/model/project'
+import { currency } from '@/calculator/model/currency'
 
 export const useCounterStore = defineStore('counter', () => {
   const materialGraph = ref<MaterialGraph>({})
@@ -19,7 +20,7 @@ export const useCounterStore = defineStore('counter', () => {
     materialLayers.value = []
     basicMaterals.value = []
     itemList.value = []
-    console.log("RESET COUNTERSTORE")
+    console.log('RESET COUNTERSTORE')
   }
 
   function calculate(id: string, changes: number) {
@@ -90,6 +91,20 @@ export const useCounterStore = defineStore('counter', () => {
     return ret
   })
 
+  const currency_statistics = computed(() => {
+    const statistics = currency.map((v) => ({
+      name: v.name,
+      icon: `https://cafemaker.wakingsands.com/i/${v.icon}`,
+      amount: 0
+    }))
+    forIn(materialGraph.value, (v) => {
+      if (v.h2getTag != -1) {
+        statistics[v.h2getTag].amount += v.price * v.amount
+      }
+    })
+    return statistics.filter((v) => v.amount != 0)
+  })
+
   return {
     materialGraph,
     materialLayers,
@@ -100,6 +115,7 @@ export const useCounterStore = defineStore('counter', () => {
     removeItem,
     materials,
     materialsWithlayer,
+    currency_statistics,
     loadProject,
     reset
   }

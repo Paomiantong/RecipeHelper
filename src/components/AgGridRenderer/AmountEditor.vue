@@ -35,7 +35,7 @@ export default defineComponent({
     // If you return true, then the result of the edit will be ignored.
     const isCancelAfterEnd = () => {
       // our editor will reject any value greater than 1000
-      return value.value > 1000
+      return value.value > 999
     }
 
     return {

@@ -18,8 +18,8 @@ export const currency = [
     items: sealItems as Currency
   },
   {
-    name: '经典神典石',
-    icon: '065000/065085.png',
+    name: '因果神典石',
+    icon: '065000/065094.png',
     items: aphorismItems as Currency
   }
 ]

@@ -2,7 +2,7 @@
   <ag-grid-vue
     class="ag-theme-material"
     style="height: 500px"
-    :columnDefs="columnDefs.value"
+    :columnDefs="columnDefs"
     :rowData="counterStore.materials"
     :defaultColDef="defaultColDef"
     rowSelection="multiple"
@@ -13,6 +13,20 @@
     :readOnlyEdit="true"
   >
   </ag-grid-vue>
+  <a-divider>兑换材料统计</a-divider>
+  <a-space>
+    <a-statistic
+      v-for="c in counterStore.currency_statistics"
+      :key="c.name"
+      :title="c.name"
+      :value="c.amount"
+      style="margin-right: 50px"
+    >
+      <template #suffix>
+        <a-avatar shape="square" :src="c.icon" size="small" />
+      </template>
+    </a-statistic>
+  </a-space>
 </template>
 
 <script lang="ts" setup>
@@ -26,6 +40,7 @@ import 'ag-grid-community/styles/ag-theme-material.min.css' // Optional theme CS
 
 import ItemAgGridRenderer from '@components/AgGridRenderer/ItemAgGridRenderer.vue'
 import ItemArchorRenderer from '@components/AgGridRenderer/ItemArchorRenderer.vue'
+import CurrencyRenderer from '@/components/AgGridRenderer/CurrencyRenderer.vue'
 import AmountEditor from '@components/AgGridRenderer/AmountEditor.vue'
 
 import { useCounterStore } from '@/stores/counter'
@@ -42,26 +57,36 @@ const onGridReady = (params: GridOptions) => {
 }
 
 // Each Column Definition results in one Column.
-const columnDefs = {
-  value: [
-    //TODO: 物品名字太长，挤压图片
-    { headerName: '物品', field: 'name', cellRenderer: ItemAgGridRenderer, flex: 1 },
-    {
-      headerName: '数量',
-      field: 'amount',
-      editable: true,
-      cellEditor: AmountEditor,
-      width: 120
-    },
-    { headerName: '坐标', field: 'gatheringPoint.name', cellRenderer: ItemArchorRenderer, flex: 1 }
-  ]
-}
+const columnDefs = [
+  //TODO: 物品名字太长，挤压图片
+  { headerName: '物品', field: 'name', cellRenderer: ItemAgGridRenderer, flex: 1 },
+  {
+    headerName: '数量',
+    field: 'amount',
+    width: 120
+  },
+  {
+    headerName: '已拥有的',
+    field: 'own',
+    editable: true,
+    cellEditor: AmountEditor,
+    width: 120
+  },
+  {
+    headerName: '兑换材料',
+    field: 'h2getTag',
+    cellRenderer: CurrencyRenderer,
+    width: 120
+  },
+  { headerName: '坐标', field: 'gatheringPoint.name', cellRenderer: ItemArchorRenderer, flex: 1 }
+]
 
 const onCellEditRequest = (event: CellEditRequestEvent<Material>) => {
   const newV = event.newValue
   const refData = event.data
-  counterStore.calculate(refData.id, refData.amount - newV)
-  gridApi.value?.setRowData(counterStore.materials)
+  counterStore.calculate(refData.id, newV - refData.own)
+  gridApi.value?.applyTransaction({ update: counterStore.materials })
+  //   gridApi.value?.setRowData(counterStore.materials)
 }
 
 // DefaultColDef sets props common to all Columns
