@@ -54,6 +54,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+
+      - name: Build For Gitee
+        run: pnpm run build --config vite.config.gitee.ts
       - name: Push to Gitee
         uses: ./.github/actions/push
         env:
