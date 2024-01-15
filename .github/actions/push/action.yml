@@ -1,0 +1,21 @@
+name: 'Push'
+inputs:
+  source-dir:
+    description: 'Path of the source dir.'
+    required: true
+    default: ''
+  destination-repo:
+    description: 'SSH URL of the destination repo.'
+    required: true
+    default: ''
+  dry-run:
+    description: 'Execute a dry run.'
+    required: false
+    default: 'false'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.source-dir }}
+    - ${{ inputs.destination-repo }}
+    - ${{ inputs.dry-run }}
