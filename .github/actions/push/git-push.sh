@@ -24,14 +24,21 @@ echo "==============================="
 ls -l
 echo "==============================="
 
-git config --global user.email "you@example.com"
-git config --global user.name "git actions"
-git add .
-git commit -m "git actions commit"
-
-if [ "$DRY_RUN" = "true" ]; then
-    echo "INFO: Dry Run, no data is pushed"
-    git push --dry-run
+# 检查仓库状态
+if git diff-index --quiet HEAD --; then
+    # 没有修改
+    echo "Nothing to push"
 else
-    git push
+    # 有修改，进行 commit
+    git config --global user.email "you@example.com"
+    git config --global user.name "git actions"
+    git add .
+    git commit -m "git actions commit"
+
+    if [ "$DRY_RUN" = "true" ]; then
+        echo "INFO: Dry Run, no data is pushed"
+        git push --dry-run
+    else
+        git push
+    fi
 fi
