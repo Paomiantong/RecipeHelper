@@ -9,8 +9,6 @@ DRY_RUN=$3
 
 GIT_SSH_COMMAND="ssh -v"
 
-ls -l
-
 echo "SOURCE=$SOURCE_DIR"
 echo "DESTINATION=$DESTINATION_REPO"
 echo "DRY RUN=$DRY_RUN"
@@ -24,11 +22,8 @@ echo "==============================="
 ls -l
 echo "==============================="
 
-# 检查仓库状态
-if git diff-index --quiet HEAD --; then
-    # 没有修改
-    echo "Nothing to push"
-else
+# 检查是否有未跟踪的文件或未提交的更改
+if git status --porcelain | grep .; then
     # 有修改，进行 commit
     git config --global user.email "you@example.com"
     git config --global user.name "git actions"
@@ -41,4 +36,7 @@ else
     else
         git push
     fi
+else
+    # 没有修改
+    echo "Nothing to push"
 fi
