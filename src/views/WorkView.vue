@@ -1,32 +1,34 @@
 <template>
-  <ag-grid-vue
-    class="ag-theme-material"
-    style="height: 500px"
-    :columnDefs="columnDefs"
-    :rowData="counterStore.materials"
-    :defaultColDef="defaultColDef"
-    rowSelection="multiple"
-    animateRows="true"
-    @cell-clicked="cellWasClicked"
-    @grid-ready="onGridReady"
-    @cell-edit-request="onCellEditRequest"
-    :readOnlyEdit="true"
-  >
-  </ag-grid-vue>
-  <a-divider>兑换材料统计</a-divider>
-  <a-space>
-    <a-statistic
-      v-for="c in counterStore.currency_statistics"
-      :key="c.name"
-      :title="c.name"
-      :value="c.amount"
-      style="margin-right: 50px"
+  <a-spin :spinning="spinning">
+    <ag-grid-vue
+      class="ag-theme-material"
+      style="height: 500px"
+      :columnDefs="columnDefs"
+      :rowData="counterStore.materials"
+      :defaultColDef="defaultColDef"
+      rowSelection="multiple"
+      animateRows="true"
+      @cell-clicked="cellWasClicked"
+      @grid-ready="onGridReady"
+      @cell-edit-request="onCellEditRequest"
+      :readOnlyEdit="true"
     >
-      <template #suffix>
-        <a-avatar shape="square" :src="c.icon" size="small" />
-      </template>
-    </a-statistic>
-  </a-space>
+    </ag-grid-vue>
+    <a-divider>兑换材料统计</a-divider>
+    <a-space>
+      <a-statistic
+        v-for="c in counterStore.currency_statistics"
+        :key="c.name"
+        :title="c.name"
+        :value="c.amount"
+        style="margin-right: 50px"
+      >
+        <template #suffix>
+          <a-avatar shape="square" :src="c.icon" size="small" />
+        </template>
+      </a-statistic>
+    </a-space>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
@@ -58,7 +60,6 @@ const onGridReady = (params: GridOptions) => {
 
 // Each Column Definition results in one Column.
 const columnDefs = [
-  //TODO: 物品名字太长，挤压图片
   { headerName: '物品', field: 'name', cellRenderer: ItemAgGridRenderer, flex: 1 },
   {
     headerName: '数量',
@@ -100,6 +101,8 @@ const cellWasClicked = (event: any) => {
   console.log('cell was clicked', event)
 }
 
+const spinning = ref<boolean>(true)
+
 // const deselectRows = () => {
 //   gridApi.value!.deselectAll()
 // }
@@ -107,6 +110,9 @@ const cellWasClicked = (event: any) => {
 const saveTask = { id: -1 }
 
 onMounted(() => {
+  projectStore.loadProejct().then(() => {
+    spinning.value = false
+  })
   saveTask.id = setInterval(projectStore.saveProject, 60000)
 })
 

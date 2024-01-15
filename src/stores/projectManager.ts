@@ -8,7 +8,8 @@ export const useProjectStore = defineStore('projectMgr', {
   state: () => {
     return {
       projectList: Array<string>(),
-      currentProject: '$Project'
+      currentProject: '$Project',
+      loaded: false
     }
   },
   getters: {
@@ -23,9 +24,6 @@ export const useProjectStore = defineStore('projectMgr', {
       const raw_current_project = localStorage.getItem('current_project')
       if (raw_current_project) {
         this.currentProject = raw_current_project
-        if (this.projectList.indexOf(this.currentProject) != -1) {
-          this.loadProejct()
-        }
       }
     },
     save() {
@@ -39,23 +37,23 @@ export const useProjectStore = defineStore('projectMgr', {
       this.loadProejct()
       this.save()
     },
-    loadProejct() {
+    async loadProejct() {
       const counterStore = useCounterStore()
       const raw_project = localStorage.getItem(this.currentProject)
       if (raw_project) {
-        counterStore.loadProject(JSON.parse(raw_project))
+        await counterStore.loadProject(JSON.parse(raw_project))
       } else {
         counterStore.reset()
       }
+      this.loaded = true
     },
     newProject(name: string) {
-      if (this.projectList.length > 0) {
+      if (this.projectList.length > 0 && this.loaded) {
         this.saveProject()
       }
       if (this.projectList.indexOf(name) == -1) {
         this.projectList.push(name)
         this.currentProject = name
-        this.loadProejct()
         this.save()
       }
     },
