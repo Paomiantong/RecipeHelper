@@ -61,7 +61,6 @@ jobs:
         with:
           source-dir: './dist'
           destination-repo: git@gitee.com:a8kt/recipe-helper.git
-          dry-run: false
       - name: Build Gitee Pages
         uses: yanglbme/gitee-pages-action@main
         with:
