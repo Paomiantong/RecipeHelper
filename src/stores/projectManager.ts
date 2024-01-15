@@ -32,7 +32,9 @@ export const useProjectStore = defineStore('projectMgr', {
     },
     switchProject(name: string) {
       if (name === this.currentProject) return
+
       this.saveProject()
+
       this.currentProject = name
       this.loadProejct()
       this.save()
@@ -48,7 +50,7 @@ export const useProjectStore = defineStore('projectMgr', {
       this.loaded = true
     },
     newProject(name: string) {
-      if (this.projectList.length > 0 && this.loaded) {
+      if (this.projectList.length > 0) {
         this.saveProject()
       }
       if (this.projectList.indexOf(name) == -1) {
@@ -58,10 +60,12 @@ export const useProjectStore = defineStore('projectMgr', {
       }
     },
     saveProject() {
-      const counterStore = useCounterStore()
-      if (this.projectList.length != 0) {
-        new Project(this.currentProject, counterStore.itemList, counterStore.materialGraph).save()
-        message.success(`${this.currentProject} 保存成功`)
+      if (this.loaded) {
+        const counterStore = useCounterStore()
+        if (this.projectList.length != 0) {
+          new Project(this.currentProject, counterStore.itemList, counterStore.materialGraph).save()
+          message.success(`${this.currentProject} 保存成功`)
+        }
       }
     },
     deleteProject(name: string) {
