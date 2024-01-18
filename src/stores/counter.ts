@@ -55,10 +55,11 @@ export const useCounterStore = defineStore('counter', () => {
     const ret = await createMaterialGraph(project.itemList, false)
     materialGraph.value = ret
     materialLayers.value = createMaterialLayers(itemList.value, materialGraph.value)
+    calculateIngredients(itemList.value, materialGraph.value)
     for (const key in project.ownAmountOfItems) {
       materialGraph.value[key].own = project.ownAmountOfItems[key]
+      calculateChanges(materialGraph.value[key], -project.ownAmountOfItems[key])
     }
-    calculateIngredients(itemList.value, materialGraph.value)
     basicMaterals.value = []
     forIn(materialGraph.value, (v) => {
       if (v.isBasic) basicMaterals.value.push(v)

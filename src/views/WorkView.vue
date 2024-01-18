@@ -35,7 +35,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3' // the AG Grid Vue Component
 
-import type { CellEditRequestEvent, GridOptions } from 'ag-grid-community'
+import type { CellEditRequestEvent, GridOptions, IRowNode } from 'ag-grid-community'
 import type Material from '@/calculator/model/material'
 
 import 'ag-grid-community/styles/ag-theme-material.min.css' // Optional theme CSS
@@ -75,8 +75,21 @@ const columnDefs = [
   },
   {
     headerName: '兑换材料',
-    field: 'h2getTag',
+    field: 'amount',
     cellRenderer: CurrencyRenderer,
+    comparator: (
+      _valueA: any,
+      _valueB: any,
+      nodeA: IRowNode<Material>,
+      nodeB: IRowNode<Material>,
+      isDescending: boolean
+    ) => {
+      const v1 = nodeA.data!
+      const v2 = nodeB.data!
+      if (v1.h2getTag != v2.h2getTag) {
+        return isDescending ? v1.h2getTag - v2.h2getTag : v2.h2getTag - v1.h2getTag
+      } else return v1.price * v1.amount - v2.price * v2.amount
+    },
     width: 120
   },
   { headerName: '坐标', field: 'gatheringPoint.name', cellRenderer: ItemArchorRenderer, flex: 1 }
