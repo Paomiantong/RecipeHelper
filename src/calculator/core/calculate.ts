@@ -1,29 +1,29 @@
-import type Material from '../model/material'
-import type { Item, MaterialGraph } from './types'
+import type Material from '../model/material';
+import type { Item, MaterialGraph } from './types';
 
 export function calculateIngredients(itemList: Item[], materialGraph: MaterialGraph) {
   for (const index in itemList) {
-    const item = materialGraph[itemList[index].id]
-    calculateChanges(item, itemList[index].amount, true)
+    const item = materialGraph[itemList[index].id];
+    calculateChanges(item, itemList[index].amount, true);
   }
 }
 
 export function calculateChanges(theItem: Material, changes: number, init = false) {
-  if (changes === 0) return
-  const currentAmount = theItem.amount
+  if (changes === 0) return;
+  const currentAmount = theItem.amount;
 
-  theItem.has += changes // 计算变化
+  theItem.has += changes; // 计算变化
 
-  let deductedAmount = theItem.maxAmount + theItem.has
+  let deductedAmount = theItem.maxAmount + theItem.has;
 
-  if (deductedAmount < 0) deductedAmount = 0
+  if (deductedAmount < 0) deductedAmount = 0;
 
   if (init) {
-    theItem.maxAmount = deductedAmount
-    theItem.has = 0
+    theItem.maxAmount = deductedAmount;
+    theItem.has = 0;
   }
 
-  theItem.amount = deductedAmount
+  theItem.amount = deductedAmount;
 
   console.log(
     `%c${changes}%c${theItem.name}%c${currentAmount}->${theItem.amount}/${theItem.maxAmount}%cHas:${theItem.has}`,
@@ -33,23 +33,23 @@ export function calculateChanges(theItem: Material, changes: number, init = fals
     'color: #fff; background: #4C4A48; padding: 5px;font-weight: bold; font-size: 14px;',
     'color: #fff; background: #F7630C; padding: 5px;font-weight: bold; font-size: 14px;',
     'color: #fff; background: #CA5010; padding: 5px;font-weight: bold; font-size: 14px;'
-  )
+  );
 
   if (!theItem.isBasic) {
     const temp =
       Math.ceil(theItem.amount / theItem.recipe!.resultAmount) -
-      Math.ceil(currentAmount / theItem.recipe!.resultAmount)
+      Math.ceil(currentAmount / theItem.recipe!.resultAmount);
 
     // 若不是基础素材先计算子配方
-    let ingredientIndex
+    let ingredientIndex;
     for (ingredientIndex in theItem.recipe!.ingredients) {
-      const ingredient = theItem.recipe!.ingredients[ingredientIndex]
+      const ingredient = theItem.recipe!.ingredients[ingredientIndex];
 
-      const ingredientChanges = ingredient[1] * temp // 计算子配方变化
+      const ingredientChanges = ingredient[1] * temp; // 计算子配方变化
 
-      if (ingredientChanges === 0) continue // 如果不需要变化则计算下一个子配方
+      if (ingredientChanges === 0) continue; // 如果不需要变化则计算下一个子配方
 
-      calculateChanges(ingredient[0], ingredientChanges, init)
+      calculateChanges(ingredient[0], ingredientChanges, init);
     }
   }
 }

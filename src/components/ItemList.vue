@@ -1,5 +1,5 @@
 <template>
-  <a-layout-sider width="400" style="background: #fff">
+  <a-layout-sider width="400" style="background: #fff; position: relative">
     <!-- 搜索框 -->
     <div id="search-box">
       <SearchOutlined />
@@ -24,23 +24,24 @@
       <a-button @click="projectStore.saveProject">Save</a-button>
     </div>
     <!-- 物品列表 -->
+    <a-alert v-if="projectStore.first_use" message="点击图片删除物品" banner type="info" closable />
     <a-list id="item-list" item-layout="horizontal" :data-source="counterStore.itemList">
       <template #renderItem="{ item }">
         <a-list-item>
           <template #actions>
             <a-input-number v-model:value="item.amount" :min="1" style="width: 70px" />
           </template>
-          <a-tooltip placement="topLeft" title="点击删除">
-            <a-avatar
-              @click="
-                () => {
-                  counterStore.removeItem(item.id)
-                }
-              "
-              shape="square"
-              :src="helpers.getIconByIconID(item.icon)"
-            />
-          </a-tooltip>
+          <a-popconfirm
+            title="你确定要删除这个物品吗?"
+            ok-text="Yes"
+            cancel-text="No"
+            @confirm="() => confirm(item)"
+            @click="(e: MouseEvent) => e.stopPropagation()"
+          >
+            <a-tooltip placement="topLeft" title="点击删除">
+              <a-avatar shape="square" :src="helpers.getIconByIconID(item.icon)" />
+            </a-tooltip>
+          </a-popconfirm>
           <span>{{ item.name }}</span>
         </a-list-item>
       </template>
@@ -49,32 +50,39 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import { debounce } from 'lodash-es'
+import { debounce } from 'lodash-es';
+import { message } from 'ant-design-vue';
 
-import { useCounterStore } from '@/stores/counter'
-import { useProjectStore } from '@/stores/projectManager'
-import { helpers } from '@/calculator'
+import { useCounterStore } from '@/stores/counter';
+import { useProjectStore } from '@/stores/projectManager';
+import { helpers } from '@/calculator';
 
-import type { SearchResult } from '@/calculator/searchHelper'
+import type { SearchResult } from '@/calculator/searchHelper';
+import type Material from '@/calculator/model/material';
 
-const value = ref<string>('')
-const dataSource = ref<SearchResult[]>([])
+const value = ref<string>('');
+const dataSource = ref<SearchResult[]>([]);
 
-const counterStore = useCounterStore()
-const projectStore = useProjectStore()
+const counterStore = useCounterStore();
+const projectStore = useProjectStore();
 
 const onSearch = debounce((key: string) => {
-  dataSource.value = helpers.searchRecipe(key)
-  dataSource.value.forEach((v) => (v.value = v.name))
-}, 200)
+  dataSource.value = helpers.searchRecipe(key);
+  dataSource.value.forEach((v) => (v.value = v.name));
+}, 200);
 
 const onSelect = (_: string, option: SearchResult) => {
   if (!counterStore.itemList.find((x) => x.id == option.id)) {
-    counterStore.itemList.push({ ...option, amount: 1 })
+    counterStore.itemList.push({ ...option, amount: 1 });
   }
-}
+};
+
+const confirm = (item: Material) => {
+  message.success('Delete Item:' + item.name);
+  counterStore.removeItem(item.id);
+};
 </script>
 
 <style scoped>

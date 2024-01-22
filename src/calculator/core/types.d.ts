@@ -1,12 +1,12 @@
-import type Material from '../model/material'
+import type Material from '../model/material';
 
 export interface MaterialGraph {
-  [x: string]: Material
+  [x: string]: Material;
 }
 
 export interface Item {
-  id: string | number
-  name: string
-  amount: number
-  icon: number
+  id: string | number;
+  name: string;
+  amount: number;
+  icon: number;
 }

@@ -17,17 +17,17 @@
       <a-layout style="padding: 0 24px 24px">
         <!-- 导航 -->
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>List</a-breadcrumb-item>
-          <a-breadcrumb-item>App</a-breadcrumb-item>
+          <a-breadcrumb-item>RecipeHelper</a-breadcrumb-item>
+          <a-breadcrumb-item>{{ route.name?.toString().toLocaleUpperCase() }}</a-breadcrumb-item>
         </a-breadcrumb>
         <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+          :style="{ background: '#fff', padding: '24px', margin: 0, positon: 'relative' }"
         >
           <RouterView />
         </a-layout-content>
         <a-layout-footer style="text-align: center">
-          Data,image FINAL FANTASY XIV©2010 - 2024 SQUARE ENIX CO., LTD. All Rights Reserved.
+          Copyright 2024 Paomiantong All Rights Reserved. Data,image FINAL FANTASY XIV©2010 - 2024
+          SQUARE ENIX CO., LTD. All Rights Reserved.
         </a-layout-footer>
       </a-layout>
     </a-layout>
@@ -35,8 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-import ProjectMenu from '@components/ProjectMenu.vue'
-import logo from '@/assets/Logo.png'
+import { useRoute } from 'vue-router';
+import ProjectMenu from '@components/ProjectMenu.vue';
+import logo from '@/assets/Logo.png';
+
+const route = useRoute();
 </script>
 
 <style scoped>

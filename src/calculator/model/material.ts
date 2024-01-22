@@ -1,10 +1,10 @@
-import type { GatheringPoint } from '../database/database'
-import type Recipe from './recipe'
+import type { GatheringPoint } from '../database/database';
+import type Recipe from './recipe';
 
 export default class Material {
-  has = 0
-  own = 0
-  h2getTag = -1
+  has = 0;
+  own = 0;
+  h2getTag = -1;
   /*
     无:        -1
     双色宝石:   0
@@ -16,17 +16,17 @@ export default class Material {
     大地白票：  5
     大地紫票：  6
 */
-  price = 0
-  fathers: { [key: string]: number } = {}
+  price = 0;
+  fathers: { [key: string]: number } = {};
   // {itemID: amountPerItem}
-  amount = 0
-  maxAmount = 0
-  id: string
-  name: string
-  icon?: number
-  isBasic: boolean
-  recipe: Recipe | null
-  gatheringPoint?: GatheringPoint
+  amount = 0;
+  maxAmount = 0;
+  id: string;
+  name: string;
+  icon?: number;
+  isBasic: boolean;
+  recipe: Recipe | null;
+  gatheringPoint?: GatheringPoint;
 
   constructor(
     id = '0',
@@ -35,11 +35,11 @@ export default class Material {
     isBasic = false,
     recipe: Recipe | null = null
   ) {
-    this.id = id
-    this.name = name
-    this.icon = icon
+    this.id = id;
+    this.name = name;
+    this.icon = icon;
 
-    this.isBasic = isBasic
-    this.recipe = recipe
+    this.isBasic = isBasic;
+    this.recipe = recipe;
   }
 }

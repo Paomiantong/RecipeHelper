@@ -1,7 +1,7 @@
-import Project from '@/calculator/model/project'
-import { defineStore } from 'pinia'
-import { useCounterStore } from './counter'
-import { message } from 'ant-design-vue'
+import Project from '@/calculator/model/project';
+import { defineStore } from 'pinia';
+import { useCounterStore } from './counter';
+import { message } from 'ant-design-vue';
 
 export const useProjectStore = defineStore('projectMgr', {
   // 推荐使用 完整类型推断的箭头函数
@@ -9,86 +9,94 @@ export const useProjectStore = defineStore('projectMgr', {
     return {
       projectList: Array<string>(),
       currentProject: '$Project',
-      loaded: false
-    }
+      loaded: false,
+      first_use: false
+    };
   },
   getters: {
     selectedKey: (state) => {
-      return [state.currentProject]
+      return [state.currentProject];
     }
   },
   actions: {
     init() {
-      const raw_project_list = localStorage.getItem('project_list')
-      if (raw_project_list) this.projectList = JSON.parse(raw_project_list)
-      const raw_current_project = localStorage.getItem('current_project')
+      const raw_project_list = localStorage.getItem('project_list');
+      if (raw_project_list) this.projectList = JSON.parse(raw_project_list);
+      else {
+        this.first_use = true;
+      }
+      const raw_current_project = localStorage.getItem('current_project');
       if (raw_current_project) {
-        this.currentProject = raw_current_project
+        this.currentProject = raw_current_project;
       }
     },
     save() {
-      localStorage.setItem('project_list', JSON.stringify(this.projectList))
-      localStorage.setItem('current_project', this.currentProject)
+      localStorage.setItem('project_list', JSON.stringify(this.projectList));
+      localStorage.setItem('current_project', this.currentProject);
     },
     switchProject(name: string) {
-      if (name === this.currentProject) return
+      if (name === this.currentProject) return;
 
-      this.saveProject()
+      this.saveProject();
 
-      this.currentProject = name
-      this.loadProejct()
-      this.save()
+      this.currentProject = name;
+      this.loadProejct();
+      this.save();
     },
     async loadProejct() {
-      const counterStore = useCounterStore()
-      const raw_project = localStorage.getItem(this.currentProject)
+      const counterStore = useCounterStore();
+      const raw_project = localStorage.getItem(this.currentProject);
       if (raw_project) {
-        await counterStore.loadProject(JSON.parse(raw_project))
+        await counterStore.loadProject(JSON.parse(raw_project));
       } else {
-        counterStore.reset()
+        counterStore.reset();
       }
-      this.loaded = true
+      this.loaded = true;
     },
     newProject(name: string) {
       if (this.projectList.length > 0) {
-        this.saveProject()
+        this.saveProject();
       }
       if (this.projectList.indexOf(name) == -1) {
-        this.projectList.push(name)
-        this.currentProject = name
-        this.save()
+        this.projectList.push(name);
+        this.currentProject = name;
+        this.save();
       }
     },
     saveProject() {
       if (this.loaded) {
-        const counterStore = useCounterStore()
+        const counterStore = useCounterStore();
         if (this.projectList.length != 0) {
-          new Project(this.currentProject, counterStore.itemList, counterStore.materialGraph).save()
-          message.success(`${this.currentProject} 保存成功`)
+          new Project(
+            this.currentProject,
+            counterStore.itemList,
+            counterStore.materialGraph
+          ).save();
+          message.success(`${this.currentProject} 保存成功`);
         }
       }
     },
     deleteProject(name: string) {
-      const counterStore = useCounterStore()
-      localStorage.removeItem(name)
+      const counterStore = useCounterStore();
+      localStorage.removeItem(name);
       if (name === this.currentProject) {
         if (this.projectList.length == 1) {
-          counterStore.reset()
-          this.currentProject = 'Project'
-          this.projectList = []
+          counterStore.reset();
+          this.currentProject = 'Project';
+          this.projectList = [];
         } else {
-          const prevIdx = this.projectList.indexOf(name)
-          const idx = this.projectList.length == prevIdx + 1 ? 0 : prevIdx
-          this.projectList.splice(prevIdx, 1)
-          this.currentProject = this.projectList[idx]
-          this.loadProejct()
+          const prevIdx = this.projectList.indexOf(name);
+          const idx = this.projectList.length == prevIdx + 1 ? 0 : prevIdx;
+          this.projectList.splice(prevIdx, 1);
+          this.currentProject = this.projectList[idx];
+          this.loadProejct();
         }
       } else {
-        const prevIdx = this.projectList.indexOf(name)
-        this.projectList.splice(prevIdx, 1)
+        const prevIdx = this.projectList.indexOf(name);
+        this.projectList.splice(prevIdx, 1);
       }
-      this.save()
-      return this.projectList.length == 0
+      this.save();
+      return this.projectList.length == 0;
     }
   }
-})
+});

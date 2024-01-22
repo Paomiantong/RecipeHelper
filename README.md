@@ -1,25 +1,22 @@
-# view
+# RecipeHelper
 
-This template should help get you started developing with Vue 3 in Vite.
+一个FFXIV配方计算器
+**Github地址:** <https://paomiantong.github.io/RecipeHelper/#/>
+**Gitee地址:** <https://a8kt.gitee.io/recipe-helper/#/>
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- [x] FFXIV 6.4
+- [x] 统计所需军票、双色宝石、神典石数量
+- [x] 显示可采集材料的采集位置
+- [x] 可添加已有材料数量，动态计算所需材料数量
+- [x] 支持配方计算项目管理
 
-## Type Support for `.vue` Imports in TS
+## TODO
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- [ ] 显示采集点类型
+- [ ] 显示可直接在系统商店中购买材料的价格
+- [ ] 显示材料板子价格
 
 ## Project Setup
 

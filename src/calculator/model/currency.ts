@@ -1,9 +1,9 @@
-import biclorGemStoneItems from '@data/bicolorGemstone.json'
-import sealItems from '@data/seal.json'
-import aphorismItems from '@data/aphorism.json'
+import biclorGemStoneItems from '@data/bicolorGemstone.json';
+import sealItems from '@data/seal.json';
+import aphorismItems from '@data/aphorism.json';
 
 interface Currency {
-  [key: string]: number
+  [key: string]: number;
 }
 
 export const currency = [
@@ -22,4 +22,4 @@ export const currency = [
     icon: '065000/065094.png',
     items: aphorismItems as Currency
   }
-]
+];

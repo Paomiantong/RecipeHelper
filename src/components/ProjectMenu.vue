@@ -21,27 +21,27 @@
 </template>
 
 <script lang="ts" setup>
-import { h } from 'vue'
-import { message } from 'ant-design-vue'
-import { DeleteFilled } from '@ant-design/icons-vue'
+import { h } from 'vue';
+import { message } from 'ant-design-vue';
+import { DeleteFilled } from '@ant-design/icons-vue';
 
-import { useProjectStore } from '@/stores/projectManager'
+import { useProjectStore } from '@/stores/projectManager';
 
-import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
-import { useRouter } from 'vue-router'
+import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
+import { useRouter } from 'vue-router';
 
-const projectStore = useProjectStore()
-const router = useRouter()
+const projectStore = useProjectStore();
+const router = useRouter();
 
 const confirm = (item: string) => {
-  message.success('Delete Project:' + item)
+  message.success('Delete Project:' + item);
   if (projectStore.deleteProject(item)) {
-    router.push({ name: 'home' })
+    router.push({ name: 'home' });
   }
-}
+};
 
 const onMenuClock = ({ key }: MenuInfo) => {
-  projectStore.switchProject(key as string)
-  router.push({ name: 'work' })
-}
+  projectStore.switchProject(key as string);
+  router.push({ name: 'work' });
+};
 </script>

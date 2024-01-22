@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts" setup>
-import { helpers } from '@/calculator'
-import type Material from '@/calculator/model/material'
-import type { ICellRendererParams } from 'ag-grid-community'
+import { helpers } from '@/calculator';
+import type Material from '@/calculator/model/material';
+import type { ICellRendererParams } from 'ag-grid-community';
 
 const props = defineProps<{
-  params: ICellRendererParams<Material, string>
-}>()
+  params: ICellRendererParams<Material, string>;
+}>();
 </script>
 
 <style>

@@ -7,17 +7,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { ICellRendererParams } from 'ag-grid-community'
-import type Material from '@/calculator/model/material'
-import { getItemH2getIcon } from '@/calculator/itemHelper'
+import type { ICellRendererParams } from 'ag-grid-community';
+import type Material from '@/calculator/model/material';
+import { getItemH2getIcon } from '@/calculator/itemHelper';
 
 const props = defineProps<{
-  params: ICellRendererParams<Material, string>
-}>()
+  params: ICellRendererParams<Material, string>;
+}>();
 
-const data = props.params.data!
+const data = props.params.data!;
 
-const tag = data.h2getTag
-const amount = data.amount * data.price
-const icon = getItemH2getIcon(tag)
+const tag = data.h2getTag;
+const amount = data.amount * data.price;
+const icon = getItemH2getIcon(tag);
 </script>

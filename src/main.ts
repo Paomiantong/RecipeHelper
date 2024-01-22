@@ -1,20 +1,20 @@
-import './assets/main.css'
-import 'ag-grid-community/styles/ag-grid.css' // Core grid CSS, always needed
+import './assets/main.css';
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
+import router from './router';
 
-import { useProjectStore } from './stores/projectManager'
+import { useProjectStore } from './stores/projectManager';
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(createPinia())
-app.use(router)
+app.use(createPinia());
+app.use(router);
 
-const projectStore = useProjectStore()
-projectStore.init()
+const projectStore = useProjectStore();
+projectStore.init();
 
-app.mount('#app')
+app.mount('#app');
