@@ -27,6 +27,8 @@ export default class Material {
   isBasic: boolean;
   recipe: Recipe | null;
   gatheringPoint?: GatheringPoint;
+  layer: number;
+  maxLayer: number;
 
   constructor(
     id = '0',
@@ -38,8 +40,9 @@ export default class Material {
     this.id = id;
     this.name = name;
     this.icon = icon;
-
     this.isBasic = isBasic;
     this.recipe = recipe;
+    this.layer = 0;
+    this.maxLayer = -1;
   }
 }

@@ -5,7 +5,7 @@
       <SearchOutlined />
       <a-auto-complete
         v-model:value="value"
-        :dropdown-match-select-width="252"
+        :dropdown-match-select-width="300"
         :bordered="false"
         style="width: 100%"
         :options="dataSource"

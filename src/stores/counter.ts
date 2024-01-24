@@ -13,13 +13,11 @@ import type { Item, MaterialGraph } from '@/calculator/core/types';
 export const useCounterStore = defineStore('counter', () => {
   const materialGraph = ref<MaterialGraph>({});
   const materialLayers = ref<string[][]>([]);
-  const basicMaterals = ref<Material[]>([]);
   const itemList = ref<Item[]>([]);
 
   function reset() {
     materialGraph.value = {};
     materialLayers.value = [];
-    basicMaterals.value = [];
     itemList.value = [];
     console.log('RESET COUNTERSTORE');
   }
@@ -43,11 +41,7 @@ export const useCounterStore = defineStore('counter', () => {
     materialGraph.value = ret;
     materialLayers.value = createMaterialLayers(itemList.value, materialGraph.value);
     calculateIngredients(itemList.value, materialGraph.value);
-    basicMaterals.value = [];
-    forIn(materialGraph.value, (v) => {
-      if (v.isBasic) basicMaterals.value.push(v);
-    });
-
+    console.log(materialGraph);
     return materialGraph;
   }
 
@@ -61,28 +55,30 @@ export const useCounterStore = defineStore('counter', () => {
       materialGraph.value[key].own = project.ownAmountOfItems[key];
       calculateChanges(materialGraph.value[key], -project.ownAmountOfItems[key]);
     }
-    basicMaterals.value = [];
-    forIn(materialGraph.value, (v) => {
-      if (v.isBasic) basicMaterals.value.push(v);
-    });
   }
 
-  const materials = computed(() => Object.entries(materialGraph.value).map((v) => v[1]));
+  const materials = computed(() =>
+    Object.entries(materialGraph.value)
+      .map((v) => v[1])
+      .sort((a, b) => a.maxLayer - b.maxLayer)
+  );
+
+  const materialsWithoutTarget = computed(() => materials.value.filter((v) => v.layer != 0));
+
+  const basicMaterials = computed(() => materials.value.filter((v) => v.isBasic));
+
+  const directMaterials = computed(() => materials.value.filter((v) => v.layer & 0x01));
 
   const materialsWithlayer = computed(() => {
     const createData = (material: Material, layer: number) => {
       return {
-        id: material.id,
-        name: material.name,
-        amount: material.amount,
-        own: material.own,
-        icon: material.icon,
+        material,
         layer
       };
     };
 
     if (materialLayers.value.length === 0) return [];
-    const ret = [];
+    const ret: ReturnType<typeof createData>[] = [];
 
     for (let i = 0; i < materialLayers.value.length; i++) {
       const layer = materialLayers.value[i];
@@ -110,14 +106,16 @@ export const useCounterStore = defineStore('counter', () => {
   return {
     materialGraph,
     materialLayers,
-    basicMaterals,
     itemList,
+    materials,
+    materialsWithoutTarget,
+    directMaterials,
+    basicMaterials,
+    materialsWithlayer,
+    currency_statistics,
     calculate,
     work,
     removeItem,
-    materials,
-    materialsWithlayer,
-    currency_statistics,
     loadProject,
     reset
   };

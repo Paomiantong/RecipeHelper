@@ -51,6 +51,14 @@ export function createMaterialLayers(itemList: Item[], materialGraph: MaterialGr
   }
   for (const i in materialLayers) {
     materialLayers[i] = uniq(materialLayers[i]);
+    const layerBit = 0x01 << parseInt(i);
+    // 物品可能存在多个layer,用bitmap来存,并且存下最深的layer用于排序
+    for (const j in materialLayers[i]) {
+      const itemId = materialLayers[i][j];
+      const item = materialGraph[itemId];
+      item.layer |= layerBit;
+      item.maxLayer = Math.max(item.maxLayer, parseInt(i));
+    }
   }
   return materialLayers;
 }

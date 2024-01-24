@@ -1,10 +1,11 @@
 <template>
   <a-spin :spinning="spinning">
+    <a-radio-group v-model:value="filters" :options="options" />
     <ag-grid-vue
       class="ag-theme-material"
-      style="height: 500px"
+      style="margin-top: 8px; height: 500px"
       :columnDefs="columnDefs"
-      :rowData="counterStore.materials"
+      :rowData="tableData"
       :defaultColDef="defaultColDef"
       rowSelection="multiple"
       animateRows="true"
@@ -32,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { AgGridVue } from 'ag-grid-vue3'; // the AG Grid Vue Component
 
 import type { CellEditRequestEvent, GridOptions, IRowNode } from 'ag-grid-community';
@@ -53,16 +54,11 @@ const projectStore = useProjectStore();
 
 const gridApi = ref<GridOptions<Material>['api']>(null); // Optional - for accessing Grid's API
 
-// Obtain API from grid's onGridReady event
-const onGridReady = (params: GridOptions) => {
-  gridApi.value = params.api;
-};
-
 // Each Column Definition results in one Column.
 const columnDefs = [
   { headerName: '物品', field: 'name', cellRenderer: ItemAgGridRenderer, flex: 1 },
   {
-    headerName: '数量',
+    headerName: '需求数量',
     field: 'amount',
     width: 120
   },
@@ -95,11 +91,37 @@ const columnDefs = [
   { headerName: '坐标', field: 'gatheringPoint.name', cellRenderer: ItemArchorRenderer, flex: 1 }
 ];
 
+const options = [
+  { label: '全部', value: 'all' },
+  { label: '直接材料', value: 'dir' },
+  { label: '基础材料', value: 'bas' },
+  { label: '全部(包括目标)', value: 'allc' }
+];
+const filters = ref<string>('all');
+
+const tableData = computed(() => {
+  switch (filters.value) {
+    case 'all':
+      return counterStore.materialsWithoutTarget;
+    case 'dir':
+      return counterStore.directMaterials;
+    case 'bas':
+      return counterStore.basicMaterials;
+    default:
+      return counterStore.materials;
+  }
+});
+
+// Obtain API from grid's onGridReady event
+const onGridReady = (params: GridOptions) => {
+  gridApi.value = params.api;
+};
+
 const onCellEditRequest = (event: CellEditRequestEvent<Material>) => {
   const newV = event.newValue;
   const refData = event.data;
   counterStore.calculate(refData.id, newV - refData.own);
-  gridApi.value?.applyTransaction({ update: counterStore.materials });
+  gridApi.value?.applyTransaction({ update: tableData.value });
   //   gridApi.value?.setRowData(counterStore.materials)
 };
 
