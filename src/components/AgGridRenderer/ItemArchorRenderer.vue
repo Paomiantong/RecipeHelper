@@ -1,21 +1,26 @@
 <template>
   <div class="item" style="height: 100%">
-    <a-tag
-      :color="stringToVibrantColor(gatheringPoint?.name)"
-      v-if="gatheringPoint"
-      :icon="h(EnvironmentOutlined)"
-      @click="() => erozeaMap.pin(gatheringPoint!.map, gatheringPoint!.x, gatheringPoint!.y)"
-      style="font-size: 14px; padding: 4px 8px"
-    >
-      {{ `${gatheringPoint?.name} (x:${gatheringPoint?.x}, y:${gatheringPoint?.y})` }}
-    </a-tag>
+    <a-badge v-if="gatheringPoint" status="success">
+      <a-tag
+        :color="stringToVibrantColor(gatheringPoint?.name)"
+        :icon="gatheringPoint.limited ? h(ClockCircleOutlined) : h(EnvironmentOutlined)"
+        @click="() => erozeaMap.pin(gatheringPoint!.map, gatheringPoint!.x, gatheringPoint!.y)"
+        style="font-size: 14px; padding: 4px 8px"
+      >
+        {{
+          `${gatheringPoint.limited ? '限 · ' : ''}${gatheringPoint?.name} (x:${
+            gatheringPoint?.x
+          }, y:${gatheringPoint?.y})`
+        }}
+      </a-tag>
+    </a-badge>
     <a-divider v-if="!gatheringPoint" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { h } from 'vue';
-import { EnvironmentOutlined } from '@ant-design/icons-vue';
+import { EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons-vue';
 
 import erozeaMap from '../ErozeaMap';
 

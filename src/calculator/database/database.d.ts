@@ -17,6 +17,7 @@ export interface GatheringPoint {
   map: string;
   x: number;
   y: number;
+  limited: boolean;
 }
 
 export interface MapDataDB {
