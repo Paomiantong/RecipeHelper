@@ -15,7 +15,7 @@
       >
         <template #option="item">
           <div style="display: flex; justify-content: space-between">
-            <a-avatar shape="square" :src="helpers.getIconByIconID(item.icon)" />
+            <a-avatar shape="square" :src="getIconByIconID(item.icon)" />
             <span>{{ item.name }}</span>
           </div>
         </template>
@@ -39,7 +39,7 @@
             @click="(e: MouseEvent) => e.stopPropagation()"
           >
             <a-tooltip placement="topLeft" title="点击删除">
-              <a-avatar shape="square" :src="helpers.getIconByIconID(item.icon)" />
+              <a-avatar shape="square" :src="getIconByIconID(item.icon)" />
             </a-tooltip>
           </a-popconfirm>
           <span>{{ item.name }}</span>
@@ -57,7 +57,7 @@ import { message } from 'ant-design-vue';
 
 import { useCounterStore } from '@/stores/counter';
 import { useProjectStore } from '@/stores/projectManager';
-import { helpers } from '@/calculator';
+import { searchRecipe, getIconByIconID } from '@/calculator';
 
 import type { SearchResult } from '@/calculator/searchHelper';
 import type Material from '@/calculator/model/material';
@@ -69,7 +69,7 @@ const counterStore = useCounterStore();
 const projectStore = useProjectStore();
 
 const onSearch = debounce((key: string) => {
-  dataSource.value = helpers.searchRecipe(key);
+  dataSource.value = searchRecipe(key);
   dataSource.value.forEach((v) => (v.value = v.name));
 }, 200);
 

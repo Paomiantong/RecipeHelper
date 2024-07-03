@@ -1,4 +1,4 @@
-import type { GatheringPoint } from '../database/database';
+import type { GatheringPoint } from '../datasource/types';
 import type Recipe from './recipe';
 
 export default class Material {

@@ -1,4 +1,4 @@
-import { items } from './database';
+import { items } from './datasource';
 import { take } from 'lodash-es';
 import Fuse from 'fuse.js';
 

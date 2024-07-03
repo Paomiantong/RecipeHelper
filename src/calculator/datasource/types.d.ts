@@ -1,4 +1,4 @@
-export interface MaterialDB {
+export interface MaterialDataSource {
   [Key: string]: {
     name: string;
     job: string;
@@ -8,8 +8,8 @@ export interface MaterialDB {
   }[];
 }
 
-export interface BasicIngredientDB {
-  [Key: string]: (string | number)[];
+export interface BasicIngredientDataSource {
+  [Key: string]: [string, number];
 }
 
 export interface GatheringPoint {
@@ -20,7 +20,7 @@ export interface GatheringPoint {
   limited: boolean;
 }
 
-export interface MapDataDB {
+export interface MapDataSource {
   gatheringItemPoint: {
     [key: string]: string[];
   };

@@ -1,7 +1,2 @@
-import { searchRecipe } from './searchHelper';
-import { getIconByIconID } from './itemHelper';
-
-export const helpers = {
-  searchRecipe,
-  getIconByIconID
-};
+export { searchRecipe } from './searchHelper';
+export { getIconByIconID } from './itemHelper';
