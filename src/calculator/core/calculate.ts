@@ -36,20 +36,18 @@ export function calculateChanges(theItem: Material, changes: number, init = fals
   );
 
   if (!theItem.isBasic) {
+    const recipe = theItem.recipe!;
     const temp =
-      Math.ceil(theItem.amount / theItem.recipe!.resultAmount) -
-      Math.ceil(currentAmount / theItem.recipe!.resultAmount);
+      Math.ceil(theItem.amount / recipe.resultAmount) -
+      Math.ceil(currentAmount / recipe.resultAmount);
 
     // 若不是基础素材先计算子配方
-    let ingredientIndex;
-    for (ingredientIndex in theItem.recipe!.ingredients) {
-      const ingredient = theItem.recipe!.ingredients[ingredientIndex];
-
-      const ingredientChanges = ingredient[1] * temp; // 计算子配方变化
+    for (const [ingredient, amount] of recipe.ingredients) {
+      const ingredientChanges = amount * temp; // 计算子配方变化
 
       if (ingredientChanges === 0) continue; // 如果不需要变化则计算下一个子配方
 
-      calculateChanges(ingredient[0], ingredientChanges, init);
+      calculateChanges(ingredient, ingredientChanges, init);
     }
   }
 }
