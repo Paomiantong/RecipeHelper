@@ -3,7 +3,7 @@
 一个FFXIV配方计算器
 
 - **Github地址:** <https://paomiantong.github.io/RecipeHelper/#/>
-- **Gitee地址:** <https://a8kt.gitee.io/recipe-helper/#/>
+- ~~**Gitee地址:** <https://a8kt.gitee.io/recipe-helper/#/>~~(Gitee的Page服务已经挂了)
 
 ## Features
 
