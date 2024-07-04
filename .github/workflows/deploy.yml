@@ -5,6 +5,11 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ['main']
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/deploy.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -64,20 +69,20 @@ jobs:
         run: pnpm run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
 
       - name: Build For Gitee
-        run: pnpm run build --config vite.config.gitee.ts
+        run: pnpm run build --mode gitee
 
       - name: Push to Gitee
         uses: ./.github/actions/push
@@ -87,10 +92,10 @@ jobs:
           source-dir: './dist'
           destination-repo: git@gitee.com:a8kt/recipe-helper.git
 
-      - name: Build Gitee Pages
-        uses: yanglbme/gitee-pages-action@main
-        with:
-          gitee-username: a8kt
-          gitee-password: ${{ secrets.GITEE_PASSWORD }}
-          gitee-repo: a8kt/recipe-helper
-          branch: master
+    #   - name: Build Gitee Pages
+    #     uses: yanglbme/gitee-pages-action@main
+    #     with:
+    #       gitee-username: a8kt
+    #       gitee-password: ${{ secrets.GITEE_PASSWORD }}
+    #       gitee-repo: a8kt/recipe-helper
+    #       branch: master

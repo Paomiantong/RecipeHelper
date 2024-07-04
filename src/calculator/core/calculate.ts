@@ -37,13 +37,13 @@ export function calculateChanges(theItem: Material, changes: number, init = fals
 
   if (!theItem.isBasic) {
     const recipe = theItem.recipe!;
-    const temp =
+    const changeMultiplier =
       Math.ceil(theItem.amount / recipe.resultAmount) -
       Math.ceil(currentAmount / recipe.resultAmount);
 
     // 若不是基础素材先计算子配方
     for (const [ingredient, amount] of recipe.ingredients) {
-      const ingredientChanges = amount * temp; // 计算子配方变化
+      const ingredientChanges = amount * changeMultiplier; // 计算子配方变化
 
       if (ingredientChanges === 0) continue; // 如果不需要变化则计算下一个子配方
 
