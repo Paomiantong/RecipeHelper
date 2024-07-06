@@ -1,5 +1,5 @@
 import { createVNode, render, ref } from 'vue';
-import ErozeaMap, { erozeaMap } from '@/components/ErozeaMap/ErozeaMap.vue';
+import EorzeanMap, { eorzeanMap } from './EorzeanMap.vue';
 
 declare global {
   interface Window {
@@ -13,7 +13,7 @@ el.id = 'map-wrapper'; // 修改ID
 document.body.appendChild(el); // 把div加到body中
 
 const vref = ref(null);
-const vnode = createVNode(ErozeaMap, { ref: vref });
+const vnode = createVNode(EorzeanMap, { ref: vref });
 render(vnode, el);
 
-export default erozeaMap;
+export default eorzeanMap;

@@ -1,3 +1,4 @@
+import { GatheringPoint } from './types.d';
 export interface MaterialDataSource {
   [Key: string]: {
     name: string;
@@ -12,13 +13,24 @@ export interface BasicIngredientDataSource {
   [Key: string]: [string, number];
 }
 
-export interface GatheringPoint {
+interface GatheringPointBase {
   name: string;
   map: string;
   x: number;
   y: number;
-  limited: boolean;
 }
+
+interface GatheringPointNotLimited extends GatheringPointBase {
+  limited: false;
+}
+
+interface GatheringPointLimited extends GatheringPointBase {
+  limited: true;
+  spawn: number[];
+  duration: number;
+}
+
+export type GatheringPoint = GatheringPointLimited | GatheringPointNotLimited;
 
 export interface MapDataSource {
   gatheringItemPoint: {

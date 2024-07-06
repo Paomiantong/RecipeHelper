@@ -4,7 +4,7 @@
       <a-tag
         :color="stringToVibrantColor(gatheringPoint?.name)"
         :icon="gatheringPoint.limited ? h(ClockCircleOutlined) : h(EnvironmentOutlined)"
-        @click="() => erozeaMap.pin(gatheringPoint!.map, gatheringPoint!.x, gatheringPoint!.y)"
+        @click="() => eorzeanMap.pin(gatheringPoint!.map, gatheringPoint!.x, gatheringPoint!.y)"
         style="font-size: 14px; padding: 4px 8px"
       >
         {{
@@ -22,7 +22,7 @@
 import { h } from 'vue';
 import { EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons-vue';
 
-import erozeaMap from '../ErozeaMap';
+import eorzeanMap from '@components/EorzeanMap';
 
 import type { ICellRendererParams } from 'ag-grid-community';
 import type Material from '@/calculator/model/material';

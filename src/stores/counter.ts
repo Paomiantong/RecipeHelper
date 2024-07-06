@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { forIn } from 'lodash-es';
+import { forIn, uniq } from 'lodash-es';
 
 import { createMaterialGraph, createMaterialLayers } from '@/calculator/core/recipe';
 import { calculateIngredients, calculateChanges } from '@/calculator/core/calculate';
@@ -9,6 +9,7 @@ import { currency } from '@/calculator/model/currency';
 
 import type Material from '@/calculator/model/material';
 import type { Item, MaterialGraph } from '@/calculator/core/types';
+import type { GatheringPoint } from '@/calculator/datasource/types';
 
 export const useCounterStore = defineStore('counter', () => {
   const materialGraph = ref<MaterialGraph>({});
@@ -103,6 +104,12 @@ export const useCounterStore = defineStore('counter', () => {
     return statistics.filter((v) => v.amount != 0);
   });
 
+  const gatheringPoints = computed(() => {
+    return uniq(
+      basicMaterials.value.filter((v) => v.gatheringPoint != undefined).map((v) => v.gatheringPoint)
+    ) as GatheringPoint[];
+  });
+
   return {
     materialGraph,
     materialLayers,
@@ -113,6 +120,7 @@ export const useCounterStore = defineStore('counter', () => {
     basicMaterials,
     materialsWithlayer,
     currency_statistics,
+    gatheringPoints,
     calculate,
     work,
     removeItem,

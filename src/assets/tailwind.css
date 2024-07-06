@@ -1,0 +1,18 @@
+.tw {
+  @layer antd,tailwind-base;
+
+  @layer tailwind-base {
+    @tailwind base;
+  }
+  @layer base {
+    svg {
+      display: inline;
+      vertical-align: baseline;
+    }
+  }
+  /* & .tw-base {
+    @tailwind tailwind-base;
+  } */
+  @tailwind components;
+  @tailwind utilities;
+}

@@ -1,5 +1,10 @@
 <template>
-  <a-layout-sider width="400" style="background: #fff; position: relative">
+  <a-layout-sider
+    width="400"
+    style="background: #fff; position: relative"
+    breakpoint="xl"
+    collapsed-width="0"
+  >
     <!-- 搜索框 -->
     <div id="search-box">
       <SearchOutlined />

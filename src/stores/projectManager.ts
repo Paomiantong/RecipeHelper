@@ -1,6 +1,7 @@
 import Project from '@/calculator/model/project';
 import { defineStore } from 'pinia';
 import { useCounterStore } from './counter';
+import { useAlarmStore } from './alarm';
 import { message } from 'ant-design-vue';
 
 export const useProjectStore = defineStore('projectMgr', {
@@ -45,11 +46,15 @@ export const useProjectStore = defineStore('projectMgr', {
     },
     async loadProejct() {
       const counterStore = useCounterStore();
+      const alarmStore = useAlarmStore();
       const raw_project = localStorage.getItem(this.currentProject);
       if (raw_project) {
-        await counterStore.loadProject(JSON.parse(raw_project));
+        const project = JSON.parse(raw_project);
+        await counterStore.loadProject(project);
+        await alarmStore.loadProject(project);
       } else {
         counterStore.reset();
+        alarmStore.reset();
       }
       this.loaded = true;
     },
@@ -66,11 +71,13 @@ export const useProjectStore = defineStore('projectMgr', {
     saveProject() {
       if (this.loaded) {
         const counterStore = useCounterStore();
+        const alarmStore = useAlarmStore();
         if (this.projectList.length != 0) {
           new Project(
             this.currentProject,
             counterStore.itemList,
-            counterStore.materialGraph
+            counterStore.materialGraph,
+            Array.from(alarmStore.alarmMap.keys())
           ).save();
           message.success(`${this.currentProject} 保存成功`);
         }

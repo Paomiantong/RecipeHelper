@@ -1,16 +1,25 @@
 import { mapData } from '../datasource';
 
-import type { MapDataSource } from '../datasource/types';
+import type { GatheringPoint, MapDataSource } from '../datasource/types';
+import type Material from '../model/material';
 import type { MaterialGraph } from './types';
+
+declare module '../datasource/types' {
+  interface GatheringPointBase {
+    id: string;
+    items: Material[];
+  }
+}
 
 /**
  * 链接采集点
  * @param materials
  */
 export async function linkGatheringPoint(materials: MaterialGraph) {
-  const loadedMapData: MapDataSource = await mapData();
+  const loadedMapData: MapDataSource = (await mapData()).default as unknown as MapDataSource;
   const { gatheringItemPoint, gatheringPoint } = loadedMapData;
-  const loadedGatheringPoints: Set<string> = new Set(); // 使用Set代替对象
+  const loadedGatheringPointsIDSet: Set<string> = new Set(); // 使用Set代替对象
+  const loadedGatheringPoints: { [key: string]: GatheringPoint } = {};
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const [_, element] of Object.entries(materials)) {
@@ -21,32 +30,18 @@ export async function linkGatheringPoint(materials: MaterialGraph) {
     if (!itemPoints) continue;
 
     // 若已经加载过该点，则直接获取
-    let gatheringPointId = itemPoints.find((id) => loadedGatheringPoints.has(id));
+    let gatheringPointId = itemPoints.find((id) => loadedGatheringPointsIDSet.has(id));
     if (gatheringPointId === undefined) {
       gatheringPointId = itemPoints[0]; // 直接获取第一个元素
-      loadedGatheringPoints.add(gatheringPointId); // 添加到Set中
+      loadedGatheringPointsIDSet.add(gatheringPointId); // 添加到Set中
+      loadedGatheringPoints[gatheringPointId] = {
+        ...gatheringPoint[gatheringPointId],
+        items: [],
+        id: gatheringPointId
+      }; // 添加到对象中
     }
 
-    element.gatheringPoint = gatheringPoint[gatheringPointId];
+    element.gatheringPoint = loadedGatheringPoints[gatheringPointId];
+    element.gatheringPoint.items.push(element);
   }
-  //   const gatheringItemPoint = loadedMapData.gatheringItemPoint;
-  //   const gatheringPoint = loadedMapData.gatheringPoint;
-  //   const loadedGatheringPoints: { [key: string]: boolean } = {};
-  //   for (const key in materials) {
-  //     if (materials[key]) {
-  //       const element = materials[key];
-  //       if (gatheringItemPoint[element.id]) {
-  //         let gatheringPointId = find(gatheringItemPoint[element.id], (o) => {
-  //           return loadedGatheringPoints[o] !== undefined;
-  //         });
-
-  //         if (gatheringPointId === undefined) {
-  //           gatheringPointId = gatheringItemPoint[element.id][0];
-  //           loadedGatheringPoints[gatheringPointId] = true;
-  //         }
-
-  //         element.gatheringPoint = gatheringPoint[gatheringPointId];
-  //       }
-  //     }
-  //   }
 }
