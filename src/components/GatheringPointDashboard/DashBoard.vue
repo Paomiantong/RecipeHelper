@@ -32,6 +32,7 @@ import * as filters from './filters';
 
 import type { DataType } from './types';
 import GatheringPointPanel from './GatheringPointPanel.vue';
+import type { GatheringPointLimited } from '@/calculator/datasource/types';
 
 const counterStore = useCounterStore();
 const alarmStore = useAlarmStore();
@@ -42,8 +43,8 @@ const data = ref<DataType[]>([]);
 // const timer = ref(0);
 
 const maps = computed(() => uniq(['所有地图', ...limitedGatheringPoints.value.map((v) => v.name)]));
-const limitedGatheringPoints = computed(() =>
-  counterStore.gatheringPoints.filter((v) => v.limited)
+const limitedGatheringPoints = computed(
+  () => counterStore.gatheringPoints.filter((v) => v.limited) as GatheringPointLimited[]
 );
 const filteredGatheringPoints = computed(() =>
   filters.mapFilter(limitedGatheringPoints.value, filterOption.value)
