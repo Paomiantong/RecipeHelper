@@ -25,7 +25,7 @@
           </div>
         </template>
       </a-auto-complete>
-      <a-button @click="counterStore.work">
+      <a-button @click="go">
         <template #icon><CaretRightOutlined /></template>
       </a-button>
       <a-button @click="projectStore.saveProject">
@@ -66,6 +66,7 @@ import { message } from 'ant-design-vue';
 
 import { useCounterStore } from '@/stores/counter';
 import { useProjectStore } from '@/stores/projectManager';
+import { useAlarmStore } from '@/stores/alarm';
 import { searchRecipe, getIconByIconID } from '@/calculator';
 
 import type { SearchResult } from '@/calculator/searchHelper';
@@ -76,11 +77,21 @@ const dataSource = ref<SearchResult[]>([]);
 
 const counterStore = useCounterStore();
 const projectStore = useProjectStore();
+const alarmStore = useAlarmStore();
 
 const onSearch = debounce((key: string) => {
   dataSource.value = searchRecipe(key);
   dataSource.value.forEach((v) => (v.value = v.name));
 }, 200);
+
+const go = async () => {
+  await counterStore.work();
+  const toRservedAlarms = counterStore.gatheringPoints.filter((x) =>
+    alarmStore.alarmIdSet.has(x.id)
+  );
+  alarmStore.reset();
+  toRservedAlarms.forEach((x) => alarmStore.addAlarm(x.id));
+};
 
 const onSelect = (_: string, option: SearchResult) => {
   if (!counterStore.itemList.find((x) => x.id == option.id)) {

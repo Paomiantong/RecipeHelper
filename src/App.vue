@@ -33,8 +33,8 @@
           <RouterView />
         </a-layout-content>
         <a-layout-footer style="text-align: center">
-          Copyright 2024 Paomiantong All Rights Reserved. Data,image FINAL FANTASY XIV©2010 - 2024
-          SQUARE ENIX CO., LTD. All Rights Reserved.
+          Copyright 2024 <router-link to="about">Paomiantong</router-link> All Rights Reserved.
+          Data,image FINAL FANTASY XIV©2010 - 2024 SQUARE ENIX CO., LTD. All Rights Reserved.
         </a-layout-footer>
       </a-layout>
     </a-layout>

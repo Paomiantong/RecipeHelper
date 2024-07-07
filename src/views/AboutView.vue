@@ -2,11 +2,13 @@
   <div class="about">
     <p>{{ earthTime }}</p>
     <p>{{ eorzeanTime }}</p>
+    <a-button @click="notify('TEST!!!', 'Notify')">Notify Test</a-button>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { toEorzeanDate, formatTime } from '@/calculator';
+import { notify } from '@/calculator/utils';
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
 const earthTime = ref('');
