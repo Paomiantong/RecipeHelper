@@ -23,5 +23,6 @@ export function notify(msg: string, title: string) {
     });
   else {
     alert(msg);
+    console.log('notify', msg);
   }
 }

@@ -147,11 +147,11 @@ jobs:
       - name: Upload Exutable File
         uses: actions/upload-artifact@v4
         with:
-          name: RecipeHelper.exe
+          name: RecipeHelper.portable
           path: src-tauri/target/release/RecipeHelper.exe
 
       - name: Upload Bundle File
         uses: actions/upload-artifact@v4
         with:
-          name: RecipeHelper.bundle.zip
+          name: RecipeHelper.bundle
           path: src-tauri/target/release/bundle
