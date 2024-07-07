@@ -1,8 +1,8 @@
 <template>
   <a-modal v-model:open="open" title="新建项目" @ok="handleOk">
     <template #footer>
-      <a-button key="back" @click="handleCancel">Return</a-button>
-      <a-button key="submit" type="primary" @click="handleOk">Submit</a-button>
+      <a-button key="back" @click="handleCancel">取消</a-button>
+      <a-button key="submit" type="primary" @click="handleOk">创建</a-button>
     </template>
     <a-input v-model:value.lazy="name" placeholder="请输入项目名称"></a-input>
   </a-modal>
@@ -13,13 +13,27 @@
       </template>
       <a-button type="primary" @click="showModal">新建项目</a-button>
     </a-empty>
-    <p style="margin-top: 24px">
-      如有更好的建议或遇计算错误、信息错误等情况请反馈至邮箱
-      <a-tag color="error">
-        <template #icon> <MailOutlined /> </template>
-        a8kt@foxmail.com
-      </a-tag>
-    </p>
+    <div class="tw">
+      <div class="mt-10 text-xs">
+        <span>如有更好的建议或遇计算错误、信息错误等情况</span>
+        <li class="mt-1">
+          请反馈至邮箱
+          <a-tag color="error">
+            <template #icon> <MailOutlined /> </template>
+            a8kt@foxmail.com
+          </a-tag>
+        </li>
+        <li class="mt-1">
+          或在github上提issue
+          <a-tag color="error">
+            <template #icon> <GithubOutlined /> </template>
+            <a href="https://github.com/Paomiantong/RecipeHelper/issues/new" target="_blank">
+              RecipeHelper
+            </a>
+          </a-tag>
+        </li>
+      </div>
+    </div>
   </div>
 </template>
 

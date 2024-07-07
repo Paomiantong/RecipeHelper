@@ -1,6 +1,11 @@
 <template>
-  <div class="tw">
-    <div class="flex flex-col tw-base gap-2 mt-4">
+  <div class="tw" style="height: 100%; position: relative">
+    <a-empty
+      class="inset-0 absolute flex flex-col justify-center"
+      v-if="alarmStore.alarmIdSet.size == 0"
+      description="未添加采集时钟"
+    />
+    <div v-else class="flex flex-col tw-base gap-2 mt-4">
       <GatheringPointPanel
         v-for="(gatheringPoint, i) in alarmStore.alarmList"
         :key="i"

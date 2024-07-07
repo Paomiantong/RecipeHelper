@@ -25,8 +25,12 @@
           </div>
         </template>
       </a-auto-complete>
-      <a-button @click="counterStore.work">Go</a-button>
-      <a-button @click="projectStore.saveProject">Save</a-button>
+      <a-button @click="counterStore.work">
+        <template #icon><CaretRightOutlined /></template>
+      </a-button>
+      <a-button @click="projectStore.saveProject">
+        <template #icon><SaveOutlined /></template>
+      </a-button>
     </div>
     <!-- 物品列表 -->
     <a-alert v-if="projectStore.first_use" message="点击图片删除物品" banner type="info" closable />
@@ -90,12 +94,15 @@ const confirm = (item: Material) => {
 };
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 #search-box {
   padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  & > .ant-btn {
+    flex-shrink: 0;
+  }
 }
 </style>
 

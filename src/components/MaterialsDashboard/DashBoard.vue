@@ -57,14 +57,15 @@ const columnDefs = [
     headerName: '物品',
     field: 'name',
     cellRenderer: ItemAgGridRenderer,
-    minWidth: 240,
+    width: 240,
     flex: 1,
-    pinned: 'left'
+    pinned: 'left',
+    resizable: true
   },
   {
     headerName: '需求数量',
     field: 'amount',
-    minWidth: 120,
+    minWidth: 80,
     flex: 1
   },
   {
@@ -73,7 +74,7 @@ const columnDefs = [
     editable: true,
     cellEditor: AmountEditor,
     flex: 1,
-    minWidth: 120
+    minWidth: 80
   },
   {
     headerName: '兑换材料',
@@ -93,7 +94,7 @@ const columnDefs = [
       } else return v1.price * v1.amount - v2.price * v2.amount;
     },
     flex: 1,
-    minWidth: 120
+    minWidth: 80
   },
   {
     headerName: '坐标',

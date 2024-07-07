@@ -1,5 +1,5 @@
 <template>
-  <div class="tw">
+  <div class="tw" style="height: 100%">
     <div class="flex flex-col md:!flex-row items-center gap-1">
       <span class="flex items-center gap-1 shrink-0">
         仅显示可采集
@@ -9,14 +9,21 @@
         <a-segmented v-model:value="filterOption" :options="maps" @change="TimedTask()" />
       </div>
     </div>
-    <div class="flex flex-col tw-base gap-2 mt-4">
-      <GatheringPointPanel
-        v-for="(gatheringPoint, i) in data"
-        :key="i"
-        :gatheringPoint="gatheringPoint"
-        :marked="alarmStore.alarmIdSet.has(gatheringPoint.id)"
-        @changeMark="changeMark"
+    <div class="relative h-full">
+      <a-empty
+        class="inset-0 absolute flex flex-col justify-center"
+        v-if="data.length == 0"
+        description="没有满足条件的采集点"
       />
+      <div v-else class="flex flex-col tw-base gap-2 mt-4">
+        <GatheringPointPanel
+          v-for="(gatheringPoint, i) in data"
+          :key="i"
+          :gatheringPoint="gatheringPoint"
+          :marked="alarmStore.alarmIdSet.has(gatheringPoint.id)"
+          @changeMark="changeMark"
+        />
+      </div>
     </div>
   </div>
 </template>

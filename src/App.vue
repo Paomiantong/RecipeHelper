@@ -21,7 +21,14 @@
           <a-breadcrumb-item>{{ route.name?.toString().toLocaleUpperCase() }}</a-breadcrumb-item>
         </a-breadcrumb>
         <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, positon: 'relative' }"
+          :style="{
+            background: '#fff',
+            padding: '24px',
+            margin: 0,
+            positon: 'relative',
+            display: 'flex',
+            flexDirection: 'column'
+          }"
         >
           <RouterView />
         </a-layout-content>

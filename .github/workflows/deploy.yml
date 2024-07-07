@@ -7,6 +7,7 @@ on:
     branches: ['main']
     paths:
       - 'src/**'
+      - 'src-tauri/**'
       - 'public/**'
       - 'pnpm-lock.yaml'
       - 'index.html'
@@ -100,3 +101,54 @@ jobs:
     #       gitee-password: ${{ secrets.GITEE_PASSWORD }}
     #       gitee-repo: a8kt/recipe-helper
     #       branch: master
+
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        filePath: ['RecipeHelper.exe', 'bundle']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build
+        run: pnpm tauri build
+
+      - name: Upload ${{ matrix.filePath }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.filePath }}
+          path: src-tauri/target/${{ matrix.filePath }}
