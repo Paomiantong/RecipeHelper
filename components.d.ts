@@ -35,6 +35,7 @@ declare module 'vue' {
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ASpace: typeof import('ant-design-vue/es')['Space']
+    ASpin: typeof import('ant-design-vue/es')['Spin']
     AStatistic: typeof import('ant-design-vue/es')['Statistic']
     ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATabPane: typeof import('ant-design-vue/es')['TabPane']

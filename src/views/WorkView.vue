@@ -1,17 +1,17 @@
 <template>
-  <!-- <a-spin :spinning="spinning"> -->
-  <a-tabs v-model:activeKey="activeKey" style="flex: 1">
-    <a-tab-pane key="1" tab="计算详情">
-      <MaterialsDashboard />
-    </a-tab-pane>
-    <a-tab-pane key="2" tab="限时采集点">
-      <GatheringPointBashBoard />
-    </a-tab-pane>
-    <a-tab-pane key="3" tab="采集时钟">
-      <AlarmDashBoard />
-    </a-tab-pane>
-  </a-tabs>
-  <!-- </a-spin> -->
+  <a-spin :spinning="spinning">
+    <a-tabs v-model:activeKey="activeKey" class="h-full">
+      <a-tab-pane key="1" tab="计算详情">
+        <MaterialsDashboard />
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="限时采集点">
+        <GatheringPointBashBoard />
+      </a-tab-pane>
+      <a-tab-pane key="3" tab="采集时钟">
+        <AlarmDashBoard />
+      </a-tab-pane>
+    </a-tabs>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
@@ -56,7 +56,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.ant-tabs .ant-tabs-content {
+.ant-tabs .ant-tabs-content,
+.ant-spin-nested-loading {
   height: 100%;
+}
+
+.ant-spin-container {
+  height: inherit;
 }
 </style>

@@ -16,7 +16,7 @@ export function searchRecipe(name: string) {
 export interface SearchResult {
   name: string;
   job: string;
-  id: number;
+  id: string;
   icon: number;
   value?: string;
 }

@@ -53,8 +53,10 @@ export const useCounterStore = defineStore('counter', () => {
     materialLayers.value = createMaterialLayers(itemList.value, materialGraph.value);
     calculateIngredients(itemList.value, materialGraph.value);
     for (const key in project.ownAmountOfItems) {
-      materialGraph.value[key].own = project.ownAmountOfItems[key];
-      calculateChanges(materialGraph.value[key], -project.ownAmountOfItems[key]);
+      if (materialGraph.value[key]) {
+        materialGraph.value[key].own = project.ownAmountOfItems[key];
+        calculateChanges(materialGraph.value[key], -project.ownAmountOfItems[key]);
+      }
     }
   }
 

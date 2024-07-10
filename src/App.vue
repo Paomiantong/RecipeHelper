@@ -14,22 +14,13 @@
       <!-- 侧边栏 -->
       <router-view name="sidebar" />
       <!-- 主体 -->
-      <a-layout style="padding: 0 24px 24px">
+      <a-layout class="h-[calc(100vh-64px)] overflow-y-auto" style="padding: 0 24px 24px">
         <!-- 导航 -->
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item>RecipeHelper</a-breadcrumb-item>
           <a-breadcrumb-item>{{ route.name?.toString().toLocaleUpperCase() }}</a-breadcrumb-item>
         </a-breadcrumb>
-        <a-layout-content
-          :style="{
-            background: '#fff',
-            padding: '24px',
-            margin: 0,
-            positon: 'relative',
-            display: 'flex',
-            flexDirection: 'column'
-          }"
-        >
+        <a-layout-content class="bg-white flex relative flex-col p-6 !min-h-fit">
           <RouterView />
         </a-layout-content>
         <a-layout-footer style="text-align: center">

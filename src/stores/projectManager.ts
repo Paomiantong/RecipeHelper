@@ -11,7 +11,7 @@ export const useProjectStore = defineStore('projectMgr', {
       projectList: Array<string>(),
       currentProject: '$Project',
       loaded: false,
-      first_use: false
+      firstUse: false
     };
   },
   getters: {
@@ -21,14 +21,13 @@ export const useProjectStore = defineStore('projectMgr', {
   },
   actions: {
     init() {
-      const raw_project_list = localStorage.getItem('project_list');
-      if (raw_project_list) this.projectList = JSON.parse(raw_project_list);
-      else {
-        this.first_use = true;
-      }
-      const raw_current_project = localStorage.getItem('current_project');
-      if (raw_current_project) {
-        this.currentProject = raw_current_project;
+      const rawProjectList = localStorage.getItem('project_list');
+      if (rawProjectList) this.projectList = JSON.parse(rawProjectList);
+      else this.firstUse = true;
+
+      const rawCurrentProject = localStorage.getItem('current_project');
+      if (rawCurrentProject) {
+        this.currentProject = rawCurrentProject;
       }
     },
     save() {
@@ -47,9 +46,9 @@ export const useProjectStore = defineStore('projectMgr', {
     async loadProejct() {
       const counterStore = useCounterStore();
       const alarmStore = useAlarmStore();
-      const raw_project = localStorage.getItem(this.currentProject);
-      if (raw_project) {
-        const project = JSON.parse(raw_project);
+      const rawProject = localStorage.getItem(this.currentProject);
+      if (rawProject) {
+        const project = JSON.parse(rawProject);
         await counterStore.loadProject(project);
         await alarmStore.loadProject(project);
       } else {
@@ -77,7 +76,7 @@ export const useProjectStore = defineStore('projectMgr', {
             this.currentProject,
             counterStore.itemList,
             counterStore.materialGraph,
-            Array.from(alarmStore.alarmMap.keys())
+            Array.from(alarmStore.alarmIdSet)
           ).save();
           message.success(`${this.currentProject} 保存成功`);
         }
@@ -85,10 +84,12 @@ export const useProjectStore = defineStore('projectMgr', {
     },
     deleteProject(name: string) {
       const counterStore = useCounterStore();
+      const alamrStore = useAlarmStore();
       localStorage.removeItem(name);
       if (name === this.currentProject) {
         if (this.projectList.length == 1) {
           counterStore.reset();
+          alamrStore.reset();
           this.currentProject = 'Project';
           this.projectList = [];
         } else {
