@@ -1,6 +1,14 @@
 <template>
   <div>
-    <a-radio-group v-model:value="filters" :options="options" />
+    <span class="flex items-center gap-1 shrink-0">
+      计算水晶
+      <a-switch
+        v-model:checked="counterStore.includeCrystal"
+        @change="counterStore.work()"
+        size="small"
+      />
+    </span>
+    <a-segmented v-model:value="filters" :options="options" />
     <ag-grid-vue
       class="ag-theme-material"
       style="margin-top: 8px; height: 500px; width: 100%"
@@ -35,7 +43,7 @@
 import { ref, computed } from 'vue';
 import { AgGridVue } from 'ag-grid-vue3'; // the AG Grid Vue Component
 
-import type { CellEditRequestEvent, GridOptions, IRowNode } from 'ag-grid-community';
+import type { CellEditRequestEvent, GridOptions } from 'ag-grid-community';
 import type Material from '@/calculator/model/material';
 
 import 'ag-grid-community/styles/ag-theme-material.min.css'; // Optional theme CSS
@@ -46,6 +54,7 @@ import CurrencyRenderer from './AgGridRenderer/CurrencyRenderer.vue';
 import AmountEditor from './AgGridRenderer/AmountEditor.vue';
 
 import { useCounterStore } from '@/stores/counter';
+import { currencyComparator, gatheringPointsComparator } from './comparator';
 
 const counterStore = useCounterStore();
 
@@ -80,19 +89,7 @@ const columnDefs = [
     headerName: '兑换材料',
     field: 'amount',
     cellRenderer: CurrencyRenderer,
-    comparator: (
-      _valueA: any,
-      _valueB: any,
-      nodeA: IRowNode<Material>,
-      nodeB: IRowNode<Material>,
-      isDescending: boolean
-    ) => {
-      const v1 = nodeA.data!;
-      const v2 = nodeB.data!;
-      if (v1.h2getTag != v2.h2getTag) {
-        return isDescending ? v1.h2getTag - v2.h2getTag : v2.h2getTag - v1.h2getTag;
-      } else return v1.price * v1.amount - v2.price * v2.amount;
-    },
+    comparator: currencyComparator,
     flex: 1,
     minWidth: 80
   },
@@ -100,6 +97,7 @@ const columnDefs = [
     headerName: '坐标',
     field: 'gatheringPoint.name',
     cellRenderer: ItemArchorRenderer,
+    comparator: gatheringPointsComparator,
     flex: 1,
     minWidth: 300
   }

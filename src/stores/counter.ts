@@ -12,6 +12,7 @@ import type { Item, MaterialGraph } from '@/calculator/core/types';
 import type { GatheringPoint } from '@/calculator/datasource/types';
 
 export const useCounterStore = defineStore('counter', () => {
+  const includeCrystal = ref(false);
   const materialGraph = ref<MaterialGraph>({});
   const materialLayers = ref<string[][]>([]);
   const itemList = ref<Item[]>([]);
@@ -38,7 +39,7 @@ export const useCounterStore = defineStore('counter', () => {
   }
 
   async function work() {
-    const ret = await createMaterialGraph(itemList.value, false);
+    const ret = await createMaterialGraph(itemList.value, includeCrystal.value);
     materialGraph.value = ret;
     materialLayers.value = createMaterialLayers(itemList.value, materialGraph.value);
     calculateIngredients(itemList.value, materialGraph.value);
@@ -48,7 +49,7 @@ export const useCounterStore = defineStore('counter', () => {
 
   async function loadProject(project: Project) {
     itemList.value = project.itemList;
-    const ret = await createMaterialGraph(project.itemList, false);
+    const ret = await createMaterialGraph(project.itemList, includeCrystal.value);
     materialGraph.value = ret;
     materialLayers.value = createMaterialLayers(itemList.value, materialGraph.value);
     calculateIngredients(itemList.value, materialGraph.value);
@@ -113,6 +114,7 @@ export const useCounterStore = defineStore('counter', () => {
   });
 
   return {
+    includeCrystal,
     materialGraph,
     materialLayers,
     itemList,

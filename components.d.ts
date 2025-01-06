@@ -32,7 +32,6 @@ declare module 'vue' {
     AmountEditor: typeof import('./src/components/MaterialsDashboard/AgGridRenderer/AmountEditor.vue')['default']
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
     AProgress: typeof import('ant-design-vue/es')['Progress']
-    ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ASpace: typeof import('ant-design-vue/es')['Space']
     ASpin: typeof import('ant-design-vue/es')['Spin']
